@@ -87,7 +87,7 @@ export default class Home extends Component {
 
     return (
       <div className={styles.home}>
-        <Helmet title="Store"/>
+        <Helmet title="Home"/>
         <header className={styles.header}>
           <FlatButton
             label="Корзина"
