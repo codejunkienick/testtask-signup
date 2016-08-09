@@ -1,0 +1,45 @@
+.wrapper {
+  z-index: 10;
+  margin-top: -40px;
+  position: relative;
+}
+.title {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 28px;
+  margin-top: 0;
+  color: #b4bfff;
+  text-transform: uppercase;
+}
+
+.price {
+  margin: 15px 0;
+  opacity: 0.8;
+  color: #37bdd0;
+  text-align: center;
+  font-size: 20px;
+  line-height: 1;
+}
+.seeAllBtn {
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 8px;
+  color: #b6b6b6;
+}
+:global(body.fonts-loaded) {
+  .price, .add, .add span, .seeAllBtn {
+    font-family: 'Roboto Condensed', 'Helvetica Neue', Helvetica, serif !important;
+  }
+}
+.btnWrapper {
+  text-align: center;
+}
+.add {
+  font-weight: 700;
+  min-width: 150px !important;
+  span {
+    font-size: 18px !important;
+  }
+}

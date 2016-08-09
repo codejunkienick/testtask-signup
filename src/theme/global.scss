@@ -1,0 +1,166 @@
+/**
+ * GLOBAL STYLES TO WHOLE APPLICATION.
+ *
+ */
+
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:700|Roboto:300&subset=latin,cyrillic);
+@import "grid"; //Include flexboxgrid
+
+html {
+  font-size: 1.125em;
+  height: 100%;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body.fonts-loaded {
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-weight: 300;
+
+  //TODO: Override styles for material-ui using theme and remove important use
+  h1,h2,h3,h4,h5,h6, .font-condensed, .btn {
+    font-family: 'Roboto Condensed', 'Helvetica Neue', Helvetica, serif !important;
+    font-weight: 700;
+  }
+}
+
+.btn {
+  font-weight: 700;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif !important;
+
+  span, button {
+    font-family: inherit !important;
+  }
+}
+
+body {
+  background-color: rgb(253, 253, 253);
+  font-weight: 400;
+  line-height: 1.45;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  color: #3D3C3C;
+  height: 100%;
+}
+
+p {
+  margin-top: 0.6em;
+  margin-bottom: 1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Helvetica Neue', Helvetica, serif;
+  font-weight: inherit;
+  line-height: 1.2;
+}
+h1, h2, h3, h4 {
+  margin: 1em 0 0.5em;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 3.998em;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 2.827em;
+}
+
+h3 {font-size: 1.999em;}
+
+h4 {font-size: 1.414em;}
+
+h5 {font-size: 20px;}
+
+h6 {font-size: 18px;}
+
+a {
+  color: #555;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(100,100,100,0.3);
+  &:hover,
+  &:active,
+  &:focus {
+    color: #1c701b;
+    border-color: #1c701b;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+ul,
+ol {
+  margin-top: 0.7em;
+  margin-bottom: 1.414em;
+}
+ul li,
+ol li {
+  line-height: 1.5rem;
+}
+ul ul,
+ol ul,
+ul ol,
+ol ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+blockquote {
+  line-height: 1.5rem;
+  margin-top: 1.414em;
+  margin-bottom: 1.414em;
+}
+
+/* Tables */
+table {
+  margin-top: 1.414em;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+table td,
+table th {
+  padding: 0;
+  line-height: 33px;
+}
+/* Code blocks */
+code {
+  vertical-align: bottom;
+}
+
+.hljs {
+  background-color:#F1F0ED;
+}
+
+pre {
+  font-family: "Courier 10 Pitch", Courier, monospace;
+  line-height: 140%;
+  white-space: pre;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+}
+
+code {
+  padding: 12px 16px;
+  border-radius: 3px;
+  display: block;
+  font-family: Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+  line-height: 140%;
+  white-space: pre;
+}
+
+/* Hug the block above you */
+.hug {
+  margin-top: 0;
+}
+
+.page-title {
+  color: rgba(77, 77, 77, 0.65);
+  line-height: 1;
+}
+
+
+// GRID

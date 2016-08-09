@@ -1,0 +1,89 @@
+.app {
+}
+.appContent {
+  width: 100%;
+  word-break: break-word;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  @media screen and (min-width: 1024px) {
+    width: 100%;
+  }
+}
+
+
+small, .font_small {font-size: 0.707em;}
+
+.drawer {
+  border-right: 3px solid #e2e4e0;
+  background: #fefffa;
+}
+.drawerContent {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.drawerLogo {
+  margin: 50px 68px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  @media screen and (max-width: 1024px) {
+    margin: 25px 34px;
+    display: flex;
+  }
+  img {
+    display:block;
+    max-width: 260px;
+  }
+}
+
+.activeDrawerLink:before,
+.nav a:hover::before {
+  content: '>';
+  display: inline-block;
+  position: absolute;
+  left: -18px;
+  top: -2px;
+  font-size: 17px;
+  font-family: inherit;
+}
+
+.nav {
+  margin-left: 86px;
+  padding: 0;
+  list-style-type: none;
+  @media screen and (max-width: 1024px) {
+    margin-left: 56px;
+  }
+
+  a:hover {
+    color: #222;
+  }
+  a {
+    position: relative;
+    color: #666;
+    text-decoration: none;
+    border: none;
+    font-size: 18px;
+    font-family: inherit;
+  }
+  li {
+    margin-bottom: 32px;
+    @media screen and (max-width: 1024px) {
+      margin-bottom: 22px;
+    }
+  }
+}
+
+.drawerFooter {
+  display: flex;
+  font-family: inherit;
+  font-size: 16px;
+  margin: 0 0 28px 40px;
+  flex-grow: 1;
+  flex-shrink: 0;
+  color: #666;
+  & > div { display: flex; align-self: flex-end; }
+}

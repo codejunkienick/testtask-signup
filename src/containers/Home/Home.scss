@@ -1,0 +1,147 @@
+.home {
+
+}
+
+// HEADER STYLES
+.header {
+  position: relative;
+  background-color: #60bad6;
+  padding: 50px 0;
+}
+.logo {
+  text-align: center;
+  padding: 25px 0 35px 0;
+  font-size: 36px;
+  color: #fff;
+  img {
+    max-width: 300px;
+  }
+}
+// STICKERS STYLES
+.items {
+  background: #eee;
+  padding-bottom: 20px;
+}
+// QUOTE STYLES
+.quote {
+  background-image: url(./quote_bg.jpg);
+  background-size: cover;
+  text-align: center;
+  padding: 100px 0 72px 0;
+}
+.quoteText {
+  position: relative;
+  color: #fff;
+  font-size: 20px;
+  display: block;
+  line-height: 1.4;
+  max-width: 670px;
+  margin: 10px auto 20px auto;
+}
+.quoteMarkLeft {
+  background-image: url('./icons/quote.svg'); 
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -40px;
+  left: -65px;
+  height: 60px;
+  width: 52px;
+  transform: rotateX(180deg) scaleX(-1);
+  opacity: 0.8;
+}
+.quoteMarkRight {
+  background-image: url('./icons/quote.svg'); 
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: -30px;
+  right: -60px;
+  height: 60px;
+  width: 52px;
+  opacity: 0.8;
+}
+.quoteAuthor {
+  color: rgba(255,255,255,0.5);
+}
+// INFO STYLES
+.info {
+  background-repeat: repeat;
+  padding: 50px 0 45px 0; 
+}
+.infoBlock {
+  text-align: center;
+}
+.infoBlockTitle {
+  text-align: center;
+  color: #757575;
+  font-size: 30px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.infoBlockImage {
+  max-width: 100px;
+  margin-bottom: 25px;
+}
+.infoBlockText {
+  text-align: center;
+  color: #444;
+  font-size: 18px;
+  margin: 0;
+}
+// CONTACT STYLES
+.contact {
+  position: relative;
+  padding: 30px 0 0 0;
+  text-align: center;
+  background-color: #242e33;
+  color: #fff;
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
+}
+.contactTitle {
+  font-size: 24px;
+  color: #fff;
+}
+.faceContainer {
+  position: relative;
+  max-width: 1000px;
+  padding-bottom: 28px;
+  margin: 0 auto;
+}
+.roundFace {
+  position: absolute;
+  right: 80px;
+  max-width: 100px;
+  opacity: 0.55;
+  bottom: 0;
+}
+// FOOTER styles
+.footer {
+  padding: 30px 0 25px 0;
+  background: #222;
+  color: #c9c9c9;
+  text-align: center;
+}
+.copyright {
+  margin-bottom: 10px;
+}
+.developers {
+
+}
+
+.snackbar {
+  font-weight: 300;
+  span {
+    font-size: 16px !important;
+  }
+  div {
+    font-size: 20px !important;
+  }
+}
+:global(body.fonts-loaded) {
+  .snackbar {
+    font-family: 'Roboto';
+  }
+}
+
