@@ -1,6 +1,13 @@
-# Starter - Lapis
+# Starter Kit - Lapis
 ---
 
+
+##TODO
+* Add API server written with koa or express
+* Change current API handling in redux to redux-thunk
+* Add React-router examples with named routes and others
+* Write simple TODO List
+* Add example with form validation
 
 ## About
 this is my starter kit
