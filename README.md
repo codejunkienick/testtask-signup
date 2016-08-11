@@ -1,15 +1,18 @@
 # Starter Kit - Lapis
 ---
 
+#DONE
+* API server with express, passport, mongo, socket.io, socket auth, oAuth
 
 ##TODO
-* Add API server written with koa or express
-* Change current API handling in redux to redux-thunk
+* Change current API handling in redux to [redux-thunk](https://github.com/gaearon/redux-thunk) or [redux-saga](https://github.com/yelouafi/redux-saga)
 * Add React-router examples with named routes and others
 * Write simple TODO List
 * Add example with form validation
 * Add test examples for Karma and PhantomJS
 * Resolve dependency issues
+* Add API calls from client
+* Merge api config and src config
 
 ## About
 this is my starter kit
