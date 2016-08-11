@@ -8,6 +8,8 @@
 * Add React-router examples with named routes and others
 * Write simple TODO List
 * Add example with form validation
+* Add test examples for Karma and PhantomJS
+* Resolve dependency issues
 
 ## About
 this is my starter kit

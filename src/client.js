@@ -26,7 +26,7 @@ const history = syncHistoryWithStore(_browserHistory, store, {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  ga.initialize('');
+  ga.initialize(''); // Add Google ID for Google Analytics
 }
 
 function logPageView() {

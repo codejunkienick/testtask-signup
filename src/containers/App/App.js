@@ -51,7 +51,9 @@ class App extends Component {
   componentWillUnmount(){
     window.removeEventListener('resize', this.draw);
   }
-
+  
+  //Observe loading and set proper styles when fonts have loaded
+  //Fonts are added inside global.scss
   loadFonts() {
     const FontFaceObserver = require('fontfaceobserver');
     const roboto = new FontFaceObserver('Roboto');
@@ -72,8 +74,6 @@ class App extends Component {
   render() {
     const {user} = this.props;
     const styles = require('./App.scss');
-    const logo = require('./logo.svg');
-    const logoMobile = require('./logoMobile.svg');
 
     const NavLink = (props) => {
       return (
@@ -90,7 +90,7 @@ class App extends Component {
     const AppBarTitle = () => {
       return (
         <div style={{display: 'flex', height: 'inherit'}}>
-          <img style={{display: 'flex', alignSelf: 'center', height: '20px'}} src={logoMobile}/>
+          Starter Kit Lapis
         </div>
       );
     }
@@ -127,7 +127,7 @@ class App extends Component {
   }
 }
 
-
+// Обертка для того, чтобы использовать material-ui и кастомные темы для material-ui
 export default class AppWrapper extends Component {
   render() {
     return (
