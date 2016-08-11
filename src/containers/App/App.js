@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { push } from 'react-router-redux';
 import config from '../../config';
-import { Drawer, AppBar, IconButton, CircularProgress } from 'material-ui';
+import { Drawer, AppBar, IconButton, CircularProgress, Tab, Tabs } from 'material-ui';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -47,7 +47,12 @@ class App extends Component {
     })
     this.loadFonts();
   }
-
+  draw = () => {
+    this.setState({
+      windowWidth: window.innerWidth,
+      openDrawer: this.shouldOpenDrawer(window.innerWidth)
+    })
+  }
   componentWillUnmount(){
     window.removeEventListener('resize', this.draw);
   }
@@ -64,11 +69,8 @@ class App extends Component {
     });
   }
 
-  draw = () => {
-    this.setState({
-      windowWidth: window.innerWidth,
-      openDrawer: this.shouldOpenDrawer(window.innerWidth)
-    })
+  handleTab(tab) {
+    this.props.pushState(tab.props['data-route']);
   }
 
   render() {
@@ -119,6 +121,18 @@ class App extends Component {
             title={<AppBarTitle />}
             iconElementLeft={<IconButton onTouchTap={(e) => this.setState({openDrawer: !this.state.openDrawer})}><AppBarIcon /></IconButton>}
           />
+          <Tabs>
+            <Tab
+              label="Home"
+              data-route="/"
+              onActive={(tab) => {this.handleTab(tab)}}
+            />
+            <Tab
+              label="Todo"
+              data-route="/todo"
+              onActive={(tab) => {this.handleTab(tab)}}
+            />
+          </Tabs>
           <div className={styles.appContent}>
             {this.props.children}
           </div>

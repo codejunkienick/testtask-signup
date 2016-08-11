@@ -4,6 +4,7 @@ import {
     App,
     Home,
     NotFound,
+    Todo
   } from 'containers';
 
 export default (store) => {
@@ -16,6 +17,8 @@ export default (store) => {
       <IndexRoute component={Home}/>
 
       { /* Routes */ }
+      <Route path="/todo" component={Todo} />
+      <Route path="/home" component={Home} />
 
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
