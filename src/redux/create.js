@@ -2,12 +2,16 @@ import { createStore as _createStore, applyMiddleware, compose } from 'redux';
 import createMiddleware from './middleware/clientMiddleware';
 import { routerMiddleware } from 'react-router-redux';
 import Immutable from 'immutable';
+import createSagaMiddleware from 'redux-saga';
 
-export default function createStore(history, client, data) {
+import { orderSaga } from 'sagas';
+
+export default function createStore(history, data) {
   // Sync dispatched route actions to the history
   const reduxRouterMiddleware = routerMiddleware(history);
+  const sagaMiddleware = createSagaMiddleware()
 
-  const middleware = [createMiddleware(client), reduxRouterMiddleware];
+  const middleware = [createMiddleware(), reduxRouterMiddleware, sagaMiddleware];
 
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
@@ -24,6 +28,8 @@ export default function createStore(history, client, data) {
 
   const reducer = require('./modules/reducer');
   const store = finalCreateStore(reducer, Immutable.fromJS(data));
+
+  sagaMiddleware.run(orderSaga);
 
 
   if (__DEVELOPMENT__ && module.hot) {

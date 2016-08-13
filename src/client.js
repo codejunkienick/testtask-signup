@@ -6,7 +6,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ga from 'react-ga';
 import createStore from './redux/create';
-import ApiClient from './helpers/ApiClient';
 import io from 'socket.io-client';
 import {Provider} from 'react-redux';
 import { Router, browserHistory,RouterContext } from 'react-router';
@@ -15,10 +14,9 @@ import { ReduxAsyncConnect,  } from 'redux-connect';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 import getRoutes from './routes';
 
-const client = new ApiClient();
 const _browserHistory = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(_browserHistory, client, window.__data);
+const store = createStore(_browserHistory, window.__data);
 const history = syncHistoryWithStore(_browserHistory, store, {
     selectLocationState (state) {
         return state.get('router').toJS();
@@ -44,7 +42,7 @@ function initSocket() {
 
 const component = (
   <Router render={(props) =>
-        <RouterContext {...props} helpers={{client}} filter={item => !item.deferred} />
+        <RouterContext {...props} filter={item => !item.deferred} />
       } history={history} onUpdate={logPageView}>
     {getRoutes(store)}
   </Router>

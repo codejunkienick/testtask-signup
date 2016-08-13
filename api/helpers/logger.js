@@ -2,14 +2,14 @@ import bunyan from 'bunyan';
 import bunyanRequest from 'bunyan-request';
 
 export const logger = bunyan.createLogger({
-  name: 'atchatAPI',
+  name: 'starter-lapis',
   streams: [
     {
       stream: process.stdout,
       level: 'debug'
     },
     {
-      path: 'hello.log',
+      path: 'trace.log',
       level: 'trace'
     }
   ],

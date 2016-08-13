@@ -8,13 +8,13 @@ import { StoreItem, CartDialog } from 'components';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart'; 
 import { FlatButton, Snackbar } from 'material-ui';
 import { sheets } from 'db';
-import { add as addItem } from 'redux/modules/order';
+import { add as addItem, load as loadItems } from 'redux/modules/order';
 
 @connect(
   state => ({
     order: state.get('order')
   }),
-  {addItem}
+  {addItem, loadItems}
 )
 export default class Home extends Component {
   constructor(props) {
@@ -28,6 +28,9 @@ export default class Home extends Component {
       },
       openCart: false
     }
+  }
+  componentWillMount() {
+    this.props.loadItems(); 
   }
 
   get cartItems() {

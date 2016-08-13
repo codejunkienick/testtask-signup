@@ -13,6 +13,7 @@
 * Resolve dependency issues
 * Add API calls from client
 * Merge api config and src config
+* Add google analytics to serverside rendering?
 
 ## About
 this is my starter kit
