@@ -1,9 +1,14 @@
 var Express = require('express');
 var webpack = require('webpack');
+var Dashboard = require('webpack-dashboard');
+var DashboardPlugin = require('webpack-dashboard/plugin');
 
 var config = require('../src/config');
 var webpackConfig = require('./dev.config');
 var compiler = webpack(webpackConfig);
+var dashboard = new Dashboard();
+
+compiler.apply(new DashboardPlugin(dashboard.setData));
 
 var host = config.host || 'localhost';
 var port = (Number(config.port) + 1) || 3001;
@@ -28,6 +33,6 @@ app.listen(port, function onAppListening(err) {
   if (err) {
     console.error(err);
   } else {
-    console.info('==> 🚧  Webpack development server listening on port %s', port);
+    // console.info('==> 🚧  Webpack development server listening on port %s', port);
   }
 });
