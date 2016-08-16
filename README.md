@@ -3,9 +3,9 @@
 
 #DONE
 * API server with express, passport, mongo, socket.io, socket auth, oAuth
+* Change current API handling in redux [redux-saga](https://github.com/yelouafi/redux-saga)
 
 ##TODO
-* Change current API handling in redux to [redux-thunk](https://github.com/gaearon/redux-thunk) or [redux-saga](https://github.com/yelouafi/redux-saga)
 * Add React-router examples with named routes and others
 * Write simple TODO List
 * Add example with form validation
