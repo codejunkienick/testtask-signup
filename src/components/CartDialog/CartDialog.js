@@ -11,6 +11,7 @@ export default class CartDialog extends Component {
       handleClose, 
       handleOrder,
       handleAdd,
+      handleRemove,
       items 
     } = this.props;
     const actions = [
@@ -22,7 +23,7 @@ export default class CartDialog extends Component {
         className='btn'
       />,
     ];
-    if (items) {
+    if (items.length > 0) {
       actions.push(
       <RaisedButton
         label='Заказать'
@@ -33,6 +34,7 @@ export default class CartDialog extends Component {
         style={{minWidth: 160, marginLeft: 8}}
       />);
     }
+    console.log(items);
     return (
         <Dialog
           actions={actions}
@@ -42,9 +44,9 @@ export default class CartDialog extends Component {
           autoScrollBodyContent={true}
           contentStyle={{maxWidth: 460}}
         >
-          <h3 className={styles.title}>{(items) ? 'Вы заказали' : 'Корзина пуста'}</h3>
+          <h3 className={styles.title}>{(items.length > 0) ? 'Вы заказали' : 'Корзина пуста'}</h3>
           <div className={styles.items}>
-            {items.map((item, idx) => {
+            {(items.length > 0) && items.map((item, idx) => {
               return (
                 <div className={styles.item} key={idx}>
                   <Paper>
@@ -59,17 +61,17 @@ export default class CartDialog extends Component {
                             <RaisedButton
                               label="Добавить"
                               primary={true}
-                              onTouchTap={handleAdd}
+                              onTouchTap={() => {handleAdd(item.id)}}
                               className="btn"
-                              style={{width: '100%', minWidth: 'none'}}
+                              style={{width: '65%', minWidth: 'none'}}
                             />
                             <RaisedButton
                               label="-1"
-                              primary={true}
-                              onTouchTap={handleAdd}
+                              onTouchTap={() => {handleRemove(item.id)}}
                               className="btn"
                               backgroundColor="#ff5252"
-                              style={{width: '100%', minWidth: 'none'}}
+                              labelColor="#fff"
+                              style={{width: '30%', minWidth: 'none', marginLeft: 10, color: '#fff'}}
                             />
                         </div>
                       </div>

@@ -1,29 +1,28 @@
 import Immutable from 'immutable';
-import { order } from '../actions';
+import { ITEMS, ADD, REMOVE }  from '../actions/order';
 
-const { ITEMS, ADD, REMOVE } = order;
 const initialState = Immutable.fromJS({
-  loaded: false
-})
-export default function info(state = initialState, action = {}) {
+  loaded: false,
+  ordered: Immutable.Map()
+}) 
+
+export default function order(state = initialState, action = {}) {
+  const { itemId, response, error } = action;
   switch (action.type) {
     case ITEMS.REQUEST: 
       return state.set('loading', true);
     case ITEMS.SUCCESS:
-      return state.delete('loading').set('loaded', true);
+      return state.delete('loading').set('loaded', true).set('items', response.items);
     case ITEMS.FAILURE:
-      return state.delete('loading').set('loaded', false).set('error', action.error);
+      return state.delete('loading').set('loaded', false).set('error', error);
     case ADD: 
-      const { itemId } = action;
       if (!itemId) return state;
-      if (state.has(itemId)) return state.set(itemId, state.get(itemId) + 1);
-      else return state.set(itemId, 1)
+      return state.setIn(['ordered', itemId], state.getIn(['ordered', itemId], 0) + 1);
     case REMOVE: 
-      if (state.get(itemId) <= 1) return state.delete(itemId);
-      else return state.set(itemId, state.get(itemId))
+      if (state.getIn(['ordered', itemId]) <= 1) return state.deleteIn(['ordered', itemId]);
+      return state.setIn(['ordered', itemId], state.getIn(['ordered', itemId]) - 1);
     default:
       return state;
   }
 }
-
 

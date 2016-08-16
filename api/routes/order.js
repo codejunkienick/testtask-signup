@@ -5,7 +5,7 @@ import path from 'path';
 const router = express.Router();
 
 const dummyData = {
-  sheets: [
+  items: [
     {
       id: 'undertale',
       price: 500,

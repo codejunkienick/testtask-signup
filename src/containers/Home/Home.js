@@ -7,14 +7,13 @@ import { connect } from 'react-redux';
 import { StoreItem, CartDialog } from 'components';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart'; 
 import { FlatButton, Snackbar } from 'material-ui';
-import { sheets } from 'db';
-import { add as addItem, load as loadItems } from 'redux/actions/order';
+import { add as addItem, remove as removeItem, load as loadItems } from 'redux/actions/order';
 
 @connect(
   state => ({
     order: state.get('order')
   }),
-  {addItem, loadItems}
+  {addItem, removeItem, loadItems}
 )
 export default class Home extends Component {
   constructor(props) {
@@ -35,7 +34,7 @@ export default class Home extends Component {
 
   get cartItems() {
     const { order } = this.props;
-    return order.map((quantity, itemId) => {
+    return order.get('ordered').map((quantity, itemId) => {
       const sheet = sheets.find((sheet) => sheet.id == itemId);
       return {
         ...sheet,
@@ -112,13 +111,13 @@ export default class Home extends Component {
         <section className={styles.items}>
           <div className="container">
             <div className="row">
-              { sheets.map((sheet, idx) => {
+              { order.get('items') && order.get('items').map((sheet, idx) => {
                 return (
                   <div className="col-md-4" key={idx}>
                     <StoreItem 
                       {...sheet} 
                       onAdd={(id, title) => {this.onAddItem(id, title)}} 
-                      ordered={(order.has(sheet.id)) ? true : false}/>
+                      ordered={(order.get('ordered').has(sheet.id)) ? true : false}/>
                   </div>
                   );
               }) }
@@ -181,6 +180,8 @@ export default class Home extends Component {
           open={openCart}
           items={this.cartItems}
           handleClose={() => this.handleCartClose()}
+          handleAdd={this.props.addItem}
+          handleRemove={this.props.removeItem}
           handleOrder={() => console.log('place order')}
         />
 
