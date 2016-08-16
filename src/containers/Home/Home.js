@@ -8,7 +8,7 @@ import { StoreItem, CartDialog } from 'components';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart'; 
 import { FlatButton, Snackbar } from 'material-ui';
 import { sheets } from 'db';
-import { add as addItem, load as loadItems } from 'redux/modules/order';
+import { add as addItem, load as loadItems } from 'redux/actions/order';
 
 @connect(
   state => ({

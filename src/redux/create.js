@@ -4,7 +4,7 @@ import { routerMiddleware } from 'react-router-redux';
 import Immutable from 'immutable';
 import createSagaMiddleware from 'redux-saga';
 
-import { orderSaga } from 'sagas';
+import { orderSaga } from './sagas';
 
 export default function createStore(history, data) {
   // Sync dispatched route actions to the history
@@ -26,15 +26,15 @@ export default function createStore(history, data) {
     finalCreateStore = applyMiddleware(...middleware)(_createStore);
   }
 
-  const reducer = require('./modules/reducer');
+  const reducer = require('./reducers/index');
   const store = finalCreateStore(reducer, Immutable.fromJS(data));
 
   sagaMiddleware.run(orderSaga);
 
 
   if (__DEVELOPMENT__ && module.hot) {
-    module.hot.accept('./modules/reducer', () => {
-      store.replaceReducer(require('./modules/reducer'));
+    module.hot.accept('./reducers/index', () => {
+      store.replaceReducer(require('./reducers/index'));
     });
   }
 
