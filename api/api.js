@@ -12,7 +12,7 @@ import passport from 'passport';
 import {Account} from 'models';
 import {FacebookTokenStrategy, VkontakteTokenStrategy, JwtStategy} from 'helpers/oAuthStrategies';
 import authenticateToken from 'helpers/authenticateToken';
-import {userRoute, authRoute, orderRoute} from './routes';
+import * as routes from './routes';
 import handleUserSocket from './ws';
 import {logger, middleware as requestMiddleware} from 'helpers/logger';
 import config from './config';
@@ -65,9 +65,9 @@ app.use(passport.session());
 app.use('/static', express.static(config.projectDir + '/public'));
 
 //Setup routes
-app.use('/user/', userRoute);
-app.use('/auth/', authRoute);
-app.use('/order/', orderRoute);
+for (let route in routes) {
+  app.use('/' + route + '/', routes[route]);
+}
 
 // Log errors
 app.use(function (err, req, res, next) {

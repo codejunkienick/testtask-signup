@@ -4,7 +4,7 @@ import { routerMiddleware } from 'react-router-redux';
 import Immutable from 'immutable';
 import createSagaMiddleware from 'redux-saga';
 
-import { orderSaga } from './sagas';
+import * as sagas from './sagas';
 
 export default function createStore(history, data) {
   // Sync dispatched route actions to the history
@@ -29,7 +29,9 @@ export default function createStore(history, data) {
   const reducer = require('./reducers/index');
   const store = finalCreateStore(reducer, Immutable.fromJS(data));
 
-  sagaMiddleware.run(orderSaga);
+  for (let saga in sagas) {
+    sagaMiddleware.run(sagas[saga]);
+  }
 
 
   if (__DEVELOPMENT__ && module.hot) {

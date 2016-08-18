@@ -5,8 +5,8 @@ export const logger = bunyan.createLogger({
   name: 'starter-lapis',
   streams: [
     {
-      stream: process.stdout,
-      level: 'debug'
+      level: 'debug',
+      path: 'debug.log',
     },
     {
       path: 'trace.log',
