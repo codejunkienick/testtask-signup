@@ -4,6 +4,7 @@
 #DONE
 * API server with express, passport, mongo, socket.io, socket auth, oAuth
 * Change current API handling in redux [redux-saga](https://github.com/yelouafi/redux-saga)
+* Cool as fuck NASA style webpack-dashboard 
 
 ##TODO
 * Add React-router examples with named routes and others
@@ -15,6 +16,7 @@
 * Merge api config and src config using configstore or ???
 * Add google analytics to serverside rendering?
 * Write tests for frontend, backend, sagas, redux, mongoose
+* Update webpack-dashboard when it fixes [61](https://github.com/FormidableLabs/webpack-dashboard/issues/61)
 
 ## About
 this is my starter kit
@@ -54,7 +56,10 @@ npm install
 ```bash
 npm run dev
 ```
-
+or with dashboard
+```bash
+npm run dev-dash
+```
 
 ## Building and Running Production Server
 

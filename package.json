@@ -30,6 +30,7 @@
     "start-dev": "better-npm-run start-dev",
     "start-dev-api": "better-npm-run start-dev-api",
     "watch-client": "better-npm-run watch-client",
+    "dev-dash": "webpack-dashboard -c magenta -m -- concurrently --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\"",
     "dev": "concurrently --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\"",
     "test": "karma start"
   },
@@ -139,6 +140,7 @@
     "url-loader": "^0.5.7",
     "warning": "^2.1.0",
     "webfontloader": "^1.6.24",
+    "webpack-dashboard": "github:formidablelabs/webpack-dashboard#fix-windows",
     "webpack-isomorphic-tools": "^2.2.18"
   },
   "devDependencies": {
