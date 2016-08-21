@@ -18,6 +18,7 @@ import {logger, middleware as requestMiddleware} from 'helpers/logger';
 import config from './config';
 
 const app = express();
+console.log('coolfeature');
 const MongoStore = require('connect-mongo')(session);
 const server = new http.Server(app);
 const io = new SocketIo(server);
