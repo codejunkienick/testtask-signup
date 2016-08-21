@@ -5,7 +5,7 @@ export default class CartDialog extends Component {
     super(props);
   }
   render() {
-    const styles = require('./CartDialog.scss');
+    const styles = require('./CartDialog.css');
     const { 
       open, 
       handleClose, 

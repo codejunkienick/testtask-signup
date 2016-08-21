@@ -58,7 +58,7 @@ class App extends Component {
   }
   
   //Observe loading and set proper styles when fonts have loaded
-  //Fonts are added inside global.scss
+  //Fonts are added inside global.css
   loadFonts() {
     const FontFaceObserver = require('fontfaceobserver');
     const roboto = new FontFaceObserver('Roboto');
@@ -75,7 +75,7 @@ class App extends Component {
 
   render() {
     const {user} = this.props;
-    const styles = require('./App.scss');
+    const styles = require('./App.css');
 
     const NavLink = (props) => {
       return (

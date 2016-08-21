@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 export default class BlogEntry extends Component {
   render() {
-    const styles = require('./Spinner.scss');
+    const styles = require('./Spinner.css');
     return (
       <div style={{
         display: 'flex',

@@ -8,7 +8,6 @@ import { StoreItem, CartDialog } from 'components';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart'; 
 import { FlatButton, Snackbar } from 'material-ui';
 import { add as addItem, remove as removeItem, load as loadItems } from 'redux/actions/order';
-
 @connect(
   state => ({
     order: state.get('order')
@@ -80,12 +79,12 @@ export default class Home extends Component {
   }
 
   render() {
-    const styles = require('./Home.scss');
     const mapIcon = require('./icons/placeholder.svg');
     const creditIcon = require('./icons/credit-card.svg');
     const lightbulbIcon = require('./icons/light-bulb.svg');
     const { order } = this.props;
     const { openCart } = this.state;
+    const styles = require('./Home.css');
 
     return (
       <div className={styles.home}>

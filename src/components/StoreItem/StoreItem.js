@@ -6,7 +6,7 @@ export default class StoreItem extends Component {
   }
   render() {
     const { title, preview, price, onAdd, id, ordered} = this.props;
-    const styles = require('./StoreItem.scss');
+    const styles = require('./StoreItem.css');
     return (
       <div className={styles.wrapper}>
         <Paper zDepth={2} style={{padding: "20px 5px 10px 5px"}}>

@@ -9,7 +9,7 @@ var compiler = webpack(webpackConfig);
 
 var host = config.host || 'localhost';
 var port = (Number(config.port) + 1) || 3001;
-compiler.apply(new DashboardPlugin());
+//compiler.apply(new DashboardPlugin());
 var serverOptions = {
   contentBase: 'http://' + host + ':' + port,
   quiet: true,

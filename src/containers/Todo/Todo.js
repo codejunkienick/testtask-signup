@@ -30,7 +30,7 @@ export default class Todo extends Component {
     this.setState({text: event.target.value});
   }
   render() {
-    const styles = require('./Todo.scss');
+    const styles = require('./Todo.css');
     const { text } = this.state;
     return (
       <div className="container">
