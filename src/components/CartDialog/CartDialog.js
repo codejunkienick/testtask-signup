@@ -34,7 +34,6 @@ export default class CartDialog extends Component {
         style={{minWidth: 160, marginLeft: 8}}
       />);
     }
-    console.log(items);
     return (
         <Dialog
           actions={actions}

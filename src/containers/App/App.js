@@ -11,12 +11,15 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import globalStyles from 'css/global.css';
+import styles from './App.css';
+import CSSModules from 'react-css-modules';
 
 // Needed for onTouchTap
 // Check this repo:
 // https://github.com/zilverline/react-tap-event-plugin
 injectTapEventPlugin();
 
+@CSSModules(styles)
 @connect(
   state => ({}),
   {pushState: push})
@@ -76,7 +79,6 @@ class App extends Component {
 
   render() {
     const {user} = this.props;
-    const styles = require('./App.css');
 
     const NavLink = (props) => {
       return (
@@ -134,7 +136,7 @@ class App extends Component {
               onActive={(tab) => {this.handleTab(tab)}}
             />
           </Tabs>
-          <div className={styles.appContent}>
+          <div styleName="appContent">
             {this.props.children}
           </div>
         </div>

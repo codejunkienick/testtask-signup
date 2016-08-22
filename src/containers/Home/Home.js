@@ -8,12 +8,16 @@ import { StoreItem, CartDialog } from 'components';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart'; 
 import { FlatButton, Snackbar } from 'material-ui';
 import { add as addItem, remove as removeItem, load as loadItems } from 'redux/actions/order';
+import CSSModules from 'react-css-modules';
+import styles from './Home.css';
+
 @connect(
   state => ({
     order: state.get('order')
   }),
   {addItem, removeItem, loadItems}
 )
+@CSSModules(styles)
 export default class Home extends Component {
   constructor(props) {
     super(props)
@@ -33,6 +37,7 @@ export default class Home extends Component {
 
   get cartItems() {
     const { order } = this.props;
+    const sheets = order.get('items');
     return order.get('ordered').map((quantity, itemId) => {
       const sheet = sheets.find((sheet) => sheet.id == itemId);
       return {
@@ -84,12 +89,11 @@ export default class Home extends Component {
     const lightbulbIcon = require('./icons/light-bulb.svg');
     const { order } = this.props;
     const { openCart } = this.state;
-    const styles = require('./Home.css');
 
     return (
-      <div className={styles.home}>
+      <div styleName="home">
         <Helmet title="Home"/>
-        <header className={styles.header}>
+        <header styleName="header">
           <FlatButton
             label="Корзина"
             backgroundColor="#7782bf"
@@ -98,16 +102,16 @@ export default class Home extends Component {
             labelPosition="after"
             primary={false}
             style={{color: '#fff', position: 'absolute', top: 20, right: 80}}
-            className={styles.cartBtn + ' btn'}
+            styleName="cartBtn" 
             icon={<ShoppingCart />}
             onClick={() => {this.openCart()}}
           />
-          <h1 className={styles.logo}>
+          <h1 styleName="logo">
             STARTER KIT. <br />
             CODENAME LAPIS
           </h1>
         </header>
-        <section className={styles.items}>
+        <section styleName="items">
           <div className="container">
             <div className="row">
               { order.get('items') && order.get('items').map((sheet, idx) => {
@@ -123,51 +127,57 @@ export default class Home extends Component {
             </div>
           </div>
         </section>
-        <section className={styles.quote}>
+        <section styleName="quote">
           <div className="container">
-            <blockquote className={styles.quoteText}>
-              <span className={styles.quoteMarkLeft} />
+            <blockquote styleName="quoteText">
+              <span styleName="quoteMarkLeft" />
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              <span className={styles.quoteMarkRight} />
+              <span styleName="quoteMarkRight" />
             </blockquote>
-            <span className={styles.quoteAuthor}>
+            <span styleName="quoteAuthor">
               Lorem Ipsum 
             </span>
           </div>
         </section>
-        <section className={styles.info}>
+        <section styleName="info">
           <div className="container">
             <div className="row">
-              <div className={styles.infoBlock + ' col-md-4 col-xs-12'}>
-                <h3 className={styles.infoBlockTitle}>Доставка</h3>
-                <img className={styles.infoBlockImage} src={mapIcon}/>
-                <p className={styles.infoBlockText}>
+              <div
+                styleName="infoBlock" 
+                className="col-md-4 col-xs-12">
+                <h3 styleName="infoBlockTitle">Доставка</h3>
+                <img styleName="infoBlockImage" src={mapIcon}/>
+                <p styleName="infoBlockText">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                 </p>
               </div>
-              <div className={styles.infoBlock + ' col-md-4 col-xs-12'}>
-                <h3 className={styles.infoBlockTitle}>Оплата</h3>
-                <img className={styles.infoBlockImage} src={creditIcon}/>
-                <p className={styles.infoBlockText}>
+              <div 
+                styleName="infoBlock" 
+                className="col-md-4 col-xs-12">
+                <h3 styleName="infoBlockTitle">Оплата</h3>
+                <img styleName="infoBlockImage" src={creditIcon}/>
+                <p styleName="infoBlockText">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                 </p>
               </div>
-              <div className={styles.infoBlock + ' col-md-4 col-xs-12'}>
-                <h3 className={styles.infoBlockTitle}>О нас</h3>
-                <img className={styles.infoBlockImage} src={lightbulbIcon}/>
-                <p className={styles.infoBlockText}>
+              <div
+                styleName="infoBlock" 
+                className="col-md-4 col-xs-12">
+                <h3 styleName="infoBlockTitle">О нас</h3>
+                <img styleName="infoBlockImage" src={lightbulbIcon}/>
+                <p styleName="infoBlockText">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                 </p>
               </div>
             </div>
           </div>
         </section>
-        <footer className={styles.footer}>
-          <div className={styles.copyright}>2016 &copy; localhost</div>
-          <div className={styles.developers}>Разработано <a href="http://katakana.xyz">katakana.xyz</a></div>
+        <footer styleName="footer">
+          <div styleName="copyright">2016 &copy; localhost</div>
+          <div styleName="developers">Разработано <a href="http://katakana.xyz">katakana.xyz</a></div>
         </footer>
         <Snackbar
-          className={styles.snackbar}
+          styleName="snackbar"
           open={this.state.snackbar.open}
           message={this.state.snackbar.message}
           action={this.state.snackbar.action}
