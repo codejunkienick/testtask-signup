@@ -6,6 +6,7 @@ var webpack = require('webpack');
 var CleanPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var strip = require('strip-loader');
+var postcss = require('./postcss-config.js');
 
 var projectRootPath = path.resolve(__dirname, '../');
 var assetsPath = path.resolve(projectRootPath, './static/dist');
@@ -41,23 +42,7 @@ module.exports = {
       { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' }
     ]
   },
-  postcss: function () {
-    return {
-      plugins: [
-        require("postcss-import")({ 
-          addDependencyTo: webpack,
-          path: ['src/theme'],
-        }),
-        require("postcss-cssnext")(),
-        require("postcss-nested")(),
-        // add your "plugins" here
-        // and if you want to compress,
-        // just use css-loader option that already use cssnano under the hood
-        require("postcss-browser-reporter")(),
-        require("postcss-reporter")(),
-      ],
-    };
-  },
+  postcss: postcss(),
   progress: true,
   resolve: {
     modulesDirectories: [

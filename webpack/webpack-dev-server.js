@@ -1,3 +1,5 @@
+require('babel-register');
+require('babel-polyfill');
 var Express = require('express');
 var webpack = require('webpack');
 var DashboardPlugin = require('webpack-dashboard/plugin');

@@ -1,19 +1,19 @@
-require('babel-polyfill');
+import fs from 'fs';
+import path from 'path';
+import webpack from 'webpack';
+import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
+import WebpackIsomorphicToolsConfig from './webpack-isomorphic-tools.js';
+import postcss from './postcss-config.js';
 
-// Webpack config for development
-var fs = require('fs');
-var path = require('path');
-var webpack = require('webpack');
-var assetsPath = path.resolve(__dirname, '../static/dist');
-var host = (process.env.HOST || 'localhost');
-var port = (+process.env.PORT + 1) || 3001;
+const assetsPath = path.resolve(__dirname, '../static/dist');
+const host = (process.env.HOST || 'localhost');
+const port = (+process.env.PORT + 1) || 3001;
 
 // https://github.com/halt-hammerzeit/webpack-isomorphic-tools
-var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
-var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools'));
+const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(WebpackIsomorphicToolsConfig);
 
-var babelrc = fs.readFileSync('./.babelrc');
-var babelrcObject = {};
+const babelrc = fs.readFileSync('./.babelrc');
+let babelrcObject = {};
 
 try {
   babelrcObject = JSON.parse(babelrc);
@@ -23,13 +23,13 @@ try {
 }
 
 
-var babelrcObjectDevelopment = babelrcObject.env && babelrcObject.env.development || {};
+const babelrcObjectDevelopment = babelrcObject.env && babelrcObject.env.development || {};
 
 // merge global and dev-only plugins
-var combinedPlugins = babelrcObject.plugins || [];
+let combinedPlugins = babelrcObject.plugins || [];
 combinedPlugins = combinedPlugins.concat(babelrcObjectDevelopment.plugins);
 
-var babelLoaderQuery = Object.assign({}, babelrcObjectDevelopment, babelrcObject, {plugins: combinedPlugins});
+let babelLoaderQuery = Object.assign({}, babelrcObjectDevelopment, babelrcObject, {plugins: combinedPlugins});
 delete babelLoaderQuery.env;
 
 // Since we use .babelrc for client and server, and we don't want HMR enabled on the server, we have to add
@@ -37,9 +37,9 @@ delete babelLoaderQuery.env;
 
 // make sure react-transform is enabled
 babelLoaderQuery.plugins = babelLoaderQuery.plugins || [];
-var reactTransform = null;
+let reactTransform = null;
 for (var i = 0; i < babelLoaderQuery.plugins.length; ++i) {
-  var plugin = babelLoaderQuery.plugins[i];
+  let plugin = babelLoaderQuery.plugins[i];
   if (Array.isArray(plugin) && plugin[0] === 'react-transform') {
     reactTransform = plugin;
   }
@@ -61,7 +61,7 @@ reactTransform[1].transforms.push({
   locals: ['module']
 });
 
-module.exports = {
+export default {
   devtool: 'inline-source-map',
   context: path.resolve(__dirname, '..'),
   entry: {
@@ -89,23 +89,7 @@ module.exports = {
       { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' }
     ]
   },
-  postcss: function () {
-    return {
-      plugins: [
-        require("postcss-import")({ 
-          addDependencyTo: webpack,
-          path: ['src/theme'],
-        }),
-        require("postcss-cssnext")(),
-        require("postcss-nested")(),
-        // add your "plugins" here
-        // and if you want to compress,
-        // just use css-loader option that already use cssnano under the hood
-        require("postcss-browser-reporter")(),
-        require("postcss-reporter")(),
-      ],
-    };
-  },
+  postcss: postcss(),
   progress: true,
   resolve: {
     modulesDirectories: [
