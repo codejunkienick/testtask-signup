@@ -12,10 +12,16 @@ export function* getTodosAsync() {
 }
 //TODO: Implement this method
 export function* addTodoAsync(todo) {
+  const {response, error} = yield call(api.addTodo, todo);
+  if(response)
+    yield put({type: ADD.SUCCESS, response});
+  else
+    yield put({type: ADD.FAILURE, error});
 }
 // Our watcher Saga: spawn a new incrementAsync task on each INCREMENT_ASYNC
 
 
 export default function* root() {
   yield fork(takeLatest, TODOS.REQUEST, getTodosAsync);
+  yield fork(takeLatest, ADD.REQUEST, addTodoAsync);
 }
