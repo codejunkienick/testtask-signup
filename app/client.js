@@ -5,22 +5,22 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ga from 'react-ga';
-import createStore from './redux/create';
 import io from 'socket.io-client';
-import {Provider} from 'react-redux';
-import { Router, browserHistory,RouterContext } from 'react-router';
+import { Provider } from 'react-redux';
+import { Router, browserHistory, RouterContext } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { ReduxAsyncConnect,  } from 'redux-connect';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
+import createStore from './redux/create';
 import getRoutes from './routes';
+import DevTools from './containers/DevTools/DevTools';
 
-const _browserHistory = useScroll(() => browserHistory)();
+const browserHistoryWithScroll = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(_browserHistory, window.__data);
-const history = syncHistoryWithStore(_browserHistory, store, {
-    selectLocationState (state) {
-        return state.get('router').toJS();
-    } 
+const store = createStore(browserHistoryWithScroll, window.reduxState);
+const history = syncHistoryWithStore(browserHistoryWithScroll, store, {
+  selectLocationState(state) {
+    return state.get('router').toJS();
+  }
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -34,16 +34,18 @@ function logPageView() {
 }
 
 function initSocket() {
-  const socket = io('', {path: '/ws'});
+  const socket = io('', { path: '/ws' });
   return socket;
 }
 
-//global.socket = initSocket();
+global.socket = initSocket();
 
 const component = (
-  <Router render={(props) =>
-        <RouterContext {...props} filter={item => !item.deferred} />
-      } history={history} onUpdate={logPageView}>
+  <Router
+    render={(props) => <RouterContext {...props} filter={item => !item.deferred} />}
+    history={history}
+    onUpdate={logPageView}
+  >
     {getRoutes(store)}
   </Router>
 );
@@ -64,7 +66,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (__DEVTOOLS__ && !window.devToolsExtension) {
-  const DevTools = require('./containers/DevTools/DevTools');
   ReactDOM.render(
     <Provider store={store} key="provider">
       <div>

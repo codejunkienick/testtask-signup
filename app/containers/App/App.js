@@ -10,7 +10,6 @@ import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import globalStyles from 'css/global.css'; // if you delete this import global styles in html.js won't be added
 import styles from './App.css';
 import CSSModules from 'react-css-modules';
 

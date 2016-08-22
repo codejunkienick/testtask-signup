@@ -20,18 +20,18 @@ module.exports = Object.assign({
     head: {
       titleTemplate: 'Starter Lapis - %s',
       meta: [
-        {name: 'description', content: ''},
-        {charset: 'utf-8'},
-        {property: 'og:site_name', content: 'Starter Lapis'},
-        {property: 'og:image', content: 'http://katakana.xyz/logo.png'},
-        {property: 'og:locale', content: 'ru_RU'},
-        {property: 'og:title', content: 'Starter Lapis'},
-        {property: 'og:description', content: ''},
-        {property: 'og:card', content: 'summary'},
-        {property: 'og:site', content: '@codejunkienick'},
-        {property: 'og:creator', content: '@codejunkienick'},
-        {property: 'og:image:width', content: '500'},
-        {property: 'og:image:height', content: '500'}
+        { name: 'description', content: '' },
+        { charset: 'utf-8' },
+        { property: 'og:site_name', content: 'Starter Lapis' },
+        { property: 'og:image', content: 'http://katakana.xyz/logo.png' },
+        { property: 'og:locale', content: 'ru_RU' },
+        { property: 'og:title', content: 'Starter Lapis' },
+        { property: 'og:description', content: '' },
+        { property: 'og:card', content: 'summary' },
+        { property: 'og:site', content: '@codejunkienick' },
+        { property: 'og:creator', content: '@codejunkienick' },
+        { property: 'og:image:width', content: '500' },
+        { property: 'og:image:height', content: '500' }
       ]
     }
   },

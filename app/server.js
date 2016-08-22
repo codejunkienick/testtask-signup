@@ -1,22 +1,22 @@
 import Express from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import config from './config';
 import favicon from 'serve-favicon';
 import compression from 'compression';
 import httpProxy from 'http-proxy';
 import path from 'path';
-import createStore from './redux/create';
-import Html from './html';
 import PrettyError from 'pretty-error';
 import http from 'http';
 import { match, RouterContext } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import createHistory from 'react-router/lib/createMemoryHistory';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import getRoutes from './routes';
+import createStore from './redux/create';
+import config from './config';
+import Html from './html';
 
-const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
+const targetUrl = `http://${config.apiHost}:${config.apiPort}`;
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
@@ -27,22 +27,22 @@ const proxy = httpProxy.createProxyServer({
 });
 
 app.use(compression());
-app.use(function (req, res, next) {
-    if (req.url.match(/^\/(css|js|img|font|woff2|svg|ttf|eot|woff)\/.+/)) {
-        res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    }
-    next();
+app.use((req, res, next) => {
+  if (req.url.match(/^\/(css|js|img|font|woff2|svg|ttf|eot|woff)\/.+/)) {
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
+  }
+  next();
 });
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 // Proxy to API server
 app.use('/api', (req, res) => {
-  proxy.web(req, res, {target: targetUrl});
+  proxy.web(req, res, { target: targetUrl });
 });
 
 app.use('/ws', (req, res) => {
-  proxy.web(req, res, {target: targetUrl + '/ws'});
+  proxy.web(req, res, { target: targetUrl + '/ws' });
 });
 
 server.on('upgrade', (req, socket, head) => {
@@ -51,15 +51,14 @@ server.on('upgrade', (req, socket, head) => {
 
 // added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
 proxy.on('error', (error, req, res) => {
-  let json;
   if (error.code !== 'ECONNRESET') {
     console.error('proxy error', error);
   }
   if (!res.headersSent) {
-    res.writeHead(500, {'content-type': 'application/json'});
+    res.writeHead(500, { 'content-type': 'application/json' });
   }
 
-  json = {error: 'proxy_error', reason: error.message};
+  const json = { error: 'proxy_error', reason: error.message };
   res.end(JSON.stringify(json));
 });
 
@@ -72,14 +71,14 @@ app.use((req, res) => {
   const memoryHistory = createHistory(req.originalUrl);
   const store = createStore(memoryHistory);
   const history = syncHistoryWithStore(memoryHistory, store, {
-    selectLocationState (state) {
+    selectLocationState(state) {
       return state.get('router').toJS();
-    } 
+    }
   });
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
-      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store} />));
   }
 
   if (__DISABLE_SSR__) {
@@ -103,10 +102,10 @@ app.use((req, res) => {
 
       res.status(200);
 
-      global.navigator = {userAgent: req.headers['user-agent']};
+      global.navigator = { userAgent: req.headers['user-agent'] };
 
       res.send('<!doctype html>\n' +
-        ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+        ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store} />));
     } else {
       res.status(404).send('Not found');
     }
