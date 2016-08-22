@@ -7,7 +7,7 @@ import compression from 'compression';
 import httpProxy from 'http-proxy';
 import path from 'path';
 import createStore from './redux/create';
-import Html from './helpers/Html';
+import Html from './html';
 import PrettyError from 'pretty-error';
 import http from 'http';
 import { match, RouterContext } from 'react-router';

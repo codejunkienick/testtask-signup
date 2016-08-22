@@ -19,10 +19,10 @@ import CSSModules from 'react-css-modules';
 // https://github.com/zilverline/react-tap-event-plugin
 injectTapEventPlugin();
 
-@CSSModules(styles)
 @connect(
   state => ({}),
   {pushState: push})
+@CSSModules(styles)
 class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
