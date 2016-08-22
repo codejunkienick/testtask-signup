@@ -141,7 +141,7 @@
     "url-loader": "^0.5.7",
     "warning": "^3.0.0",
     "webfontloader": "^1.6.26",
-    "webpack-dashboard": "^0.16.0",
+    "webpack-dashboard": "^0.1.6",
     "webpack-isomorphic-tools": "^2.5.7"
   },
   "devDependencies": {
