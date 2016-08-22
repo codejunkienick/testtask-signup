@@ -5,6 +5,7 @@
 * API server with express, passport, mongo, socket.io, socket auth, oAuth
 * Change current API handling in redux [redux-saga](https://github.com/yelouafi/redux-saga)
 * Cool as fuck NASA style webpack-dashboard 
+* Postcss
 
 ##TODO
 * Add React-router examples with named routes and others
@@ -17,6 +18,8 @@
 * Add google analytics to serverside rendering?
 * Write tests for frontend, backend, sagas, redux, mongoose
 * Update webpack-dashboard when it fixes [61](https://github.com/FormidableLabs/webpack-dashboard/issues/61)
+* Fix asset not found global.css when global.css only required in html.js
+* Rewrite webpack config in ES6 
 
 ## About
 this is my starter kit
@@ -33,8 +36,7 @@ this is my starter kit
 * [Redux Saga]()
 * [React Router Redux](https://github.com/reactjs/react-router-redux) Redux/React Router bindings.
 * [ESLint](http://eslint.org) to maintain a consistent code style
-* [style-loader](https://github.com/webpack/style-loader), [sass-loader](https://github.com/jtangelder/sass-loader) and [less-loader](https://github.com/webpack/less-loader) to allow import of stylesheets in plain css, sass and less,
-* [bootstrap-sass-loader](https://github.com/shakacode/bootstrap-sass-loader) and to customize Bootstrap and I want to remove this dependency, because i only use normalize from Bootstrap.
+* [style-loader](https://github.com/webpack/style-loader), [postcss-loader](https://github.com/postcss/postcss-loader) to use postcss with cssnext and various plugins
 * [react-helmet](https://github.com/nfl/react-helmet) to manage title and meta tag information on both server and client
 * [webpack-isomorphic-tools](https://github.com/halt-hammerzeit/webpack-isomorphic-tools) to allow require() work for statics both on client and server
 
