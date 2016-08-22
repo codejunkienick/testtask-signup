@@ -80,7 +80,7 @@ module.exports = {
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery)]},
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.css$/, loader: 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[local]___[hash:base64:5]!postcss-loader' },
+      { test: /\.css$/, loader: 'style!css?modules&importLoaders=1&localIdentName=[local]___[hash:base64:5]!postcss' },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
@@ -96,10 +96,8 @@ module.exports = {
           addDependencyTo: webpack,
           path: ['src/theme'],
         }),
-        require('postcss-assets')({
-        }),
-        require("postcss-url")(),
         require("postcss-cssnext")(),
+        require("postcss-nested")(),
         // add your "plugins" here
         // and if you want to compress,
         // just use css-loader option that already use cssnano under the hood

@@ -20,7 +20,7 @@
   padding-bottom: 20px;
 }
 .quote {
-  background-image: resolve(./quote_bg.jpg);
+  background-image: url(./quote_bg.jpg);
   background-size: cover;
   text-align: center;
   padding: 100px 0 72px 0;
@@ -35,7 +35,7 @@
   margin: 10px auto 20px auto;
 }
 .quoteMarkLeft {
-  background-image: resolve('./icons/quote.svg'); 
+  background-image: url('./icons/quote.svg'); 
   background-repeat: no-repeat;
   position: absolute;
   top: -40px;
@@ -46,7 +46,7 @@
   opacity: 0.8;
 }
 .quoteMarkRight {
-  background-image: resolve('./icons/quote.svg'); 
+  background-image: url('./icons/quote.svg'); 
   background-repeat: no-repeat;
   position: absolute;
   bottom: -30px;
@@ -58,7 +58,6 @@
 .quoteAuthor {
   color: rgba(255,255,255,0.5);
 }
-// INFO STYLES
 .info {
   background-repeat: repeat;
   padding: 50px 0 45px 0; 
@@ -111,7 +110,6 @@
   opacity: 0.55;
   bottom: 0;
 }
-// FOOTER styles
 .footer {
   padding: 30px 0 25px 0;
   background: #222;

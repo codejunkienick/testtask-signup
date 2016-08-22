@@ -10,6 +10,7 @@ import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import globalStyles from 'css/global.css';
 
 // Needed for onTouchTap
 // Check this repo:

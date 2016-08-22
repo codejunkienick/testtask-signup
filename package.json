@@ -64,7 +64,7 @@
       }
     },
     "start-dev-api": {
-      "command": "nodemon ./bin/api.js",
+      "command": "nodemon ./bin/api.js --watch ./api",
       "env": {
         "NODE_PATH": "./api",
         "NODE_ENV": "development",
@@ -193,6 +193,7 @@
     "postcss-import": "^8.1.2",
     "postcss-loader": "^0.10.1",
     "postcss-modules": "^0.5.2",
+    "postcss-nested": "^1.0.0",
     "postcss-reporter": "^1.4.1",
     "postcss-url": "^5.1.2",
     "react-a11y": "^0.3.3",

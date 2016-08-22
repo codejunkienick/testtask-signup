@@ -29,7 +29,7 @@
   color: #b6b6b6;
 }
 :global(body.fonts-loaded) {
-  .price, .add, .add span, .seeAllBtn {
+  & .price, & .add, & .add span, & .seeAllBtn {
     font-family: 'Roboto Condensed', 'Helvetica Neue', Helvetica, serif !important;
   }
 }
