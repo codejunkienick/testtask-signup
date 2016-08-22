@@ -4,7 +4,7 @@ export default function postcss(webpack) {
       plugins: [
         require("postcss-import")({ 
           addDependencyTo: webpack,
-            path: ['src/theme'],
+            path: ['app/css'],
         }),
         require("postcss-cssnext")(),
         require("postcss-nested")(),

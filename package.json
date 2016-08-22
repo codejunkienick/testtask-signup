@@ -26,7 +26,7 @@
     "start-test": "better-npm-run start-test",
     "build": "better-npm-run build",
     "postinstall": "npm run build",
-    "lint": "eslint -c .eslintrc src api",
+    "lint": "eslint -c .eslintrc app api",
     "start-dev": "better-npm-run start-dev",
     "start-dev-api": "better-npm-run start-dev-api",
     "watch-client": "better-npm-run watch-client",
@@ -38,7 +38,7 @@
     "start-prod": {
       "command": "node ./bin/server.js",
       "env": {
-        "NODE_PATH": "./src",
+        "NODE_PATH": "./app",
         "NODE_ENV": "production",
         "PORT": 3333,
         "APIPORT": 3131,
@@ -48,7 +48,7 @@
     "start-test": {
       "command": "node ./bin/server.js",
       "env": {
-        "NODE_PATH": "./src",
+        "NODE_PATH": "./app",
         "NODE_ENV": "production",
         "PORT": 3000,
         "APIPORT": 80
@@ -57,7 +57,7 @@
     "start-dev": {
       "command": "nodemon ./bin/server.js",
       "env": {
-        "NODE_PATH": "./src",
+        "NODE_PATH": "./app",
         "NODE_ENV": "development",
         "PORT": 3000,
         "APIPORT": 3131
@@ -72,10 +72,10 @@
       }
     },
     "watch-client": {
-      "command": "node webpack/webpack-dev-server.js",
+      "command": "node ./bin/webpack.js",
       "env": {
         "UV_THREADPOOL_SIZE": 100,
-        "NODE_PATH": "./src",
+        "NODE_PATH": "./app",
         "PORT": 3000,
         "APIPORT": 3131
       }

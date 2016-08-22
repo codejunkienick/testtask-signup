@@ -1,18 +1,17 @@
-require('babel-register');
 require('babel-polyfill');
-var Express = require('express');
-var webpack = require('webpack');
-var DashboardPlugin = require('webpack-dashboard/plugin');
+import Express from 'express';
+import webpack from 'webpack';
+import DashboardPlugin from 'webpack-dashboard/plugin';
+import config from '../app/config';
+import webpackConfig from './dev.config';
 
-var config = require('../src/config');
-var webpackConfig = require('./dev.config');
-var compiler = webpack(webpackConfig);
+const compiler = webpack(webpackConfig);
 
 
-var host = config.host || 'localhost';
-var port = (Number(config.port) + 1) || 3001;
+const host = config.host || 'localhost';
+const port = (Number(config.port) + 1) || 3001;
 //compiler.apply(new DashboardPlugin());
-var serverOptions = {
+const serverOptions = {
   contentBase: 'http://' + host + ':' + port,
   quiet: true,
   noInfo: true,
@@ -24,15 +23,15 @@ var serverOptions = {
   stats: {colors: true}
 };
 
-var app = new Express();
+const app = new Express();
 
 app.use(require('webpack-dev-middleware')(compiler, serverOptions));
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.listen(port, function onAppListening(err) {
+app.listen(port, (err) => {
   if (err) {
     console.error(err);
   } else {
-    // console.info('==> 🚧  Webpack development server listening on port %s', port);
+    console.info('==> 🚧  Webpack development server listening on port %s', port);
   }
 });

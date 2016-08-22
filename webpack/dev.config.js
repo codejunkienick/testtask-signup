@@ -67,7 +67,7 @@ export default {
   entry: {
     'main': [
       'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
-      './src/client.js',
+      './app/client.js',
     ]
   },
   output: {
@@ -93,7 +93,7 @@ export default {
   progress: true,
   resolve: {
     modulesDirectories: [
-      'src',
+      'app',
       'node_modules'
     ],
     extensions: ['', '.json', '.js', '.jsx']
