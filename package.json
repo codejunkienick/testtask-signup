@@ -41,7 +41,7 @@
         "NODE_PATH": "./src",
         "NODE_ENV": "production",
         "PORT": 3333,
-        "APIPORT": 80,
+        "APIPORT": 3131,
         "APIHOST": "localhost"
       }
     },
