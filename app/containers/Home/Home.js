@@ -6,14 +6,14 @@ import { connect } from 'react-redux';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart'; 
 import { FlatButton, Snackbar } from 'material-ui';
 import styles from './Home.css';
-import { StoreItem, CartDialog } from 'components';
-import { add as addItem, remove as removeItem, load as loadItems } from 'redux/actions/order';
+import { StoreItem } from 'components';
+import { add as addItem, load as loadItems } from 'redux/actions/order';
 
 @connect(
   state => ({
     order: state.get('order')
   }),
-  { addItem, removeItem, loadItems }
+  { addItem, loadItems }
 )
 @applyStyles(styles)
 export default class Home extends Component {
@@ -30,12 +30,6 @@ export default class Home extends Component {
   }
   componentWillMount() {
     this.props.loadItems(); 
-  }
-
-  handleCartClose() {
-    this.setState({
-      openCart: false 
-    });  
   }
   
   handleSnackbarRequestClose() {
@@ -63,51 +57,15 @@ export default class Home extends Component {
     this.openSnackbar(name);
   }
 
-  get cartItems() {
-    const { order } = this.props;
-    const sheets = order.get('items');
-    return order.get('ordered').map((quantity, itemId) => {
-      const sheet = sheets.find((sheet) => sheet.id == itemId);
-      return {
-        ...sheet,
-        quantity,
-      } 
-    }).toArray();
-  }
-
-  openCart() {
-    //TODO: On mobile move to other screen/fullscreen overlay. On desktop open popup
-    this.setState({ openCart: true });
-  }
-
   render() {
     const mapIcon = require('./icons/placeholder.svg');
     const creditIcon = require('./icons/credit-card.svg');
     const lightbulbIcon = require('./icons/light-bulb.svg');
     const { order } = this.props;
-    const { openCart } = this.state;
 
     return (
       <div styleName="home">
         <Helmet title="Home"/>
-        <header styleName="header">
-          <FlatButton
-            label="Cart"
-            backgroundColor="#7782bf"
-            hoverColor="#9da8ea"
-            rippleColor="#fff"
-            labelPosition="after"
-            primary={false}
-            style={{ color: '#fff', position: 'absolute', top: 20, right: 80 }}
-            styleName="cartBtn" 
-            icon={<ShoppingCart />}
-            onClick={() => { this.openCart() }}
-          />
-          <h1 styleName="logo">
-            STARTER KIT. <br />
-            CODENAME LAPIS
-          </h1>
-        </header>
         <section styleName="items">
           <div className="container">
             <div className="row">
@@ -181,16 +139,8 @@ export default class Home extends Component {
           message={this.state.snackbar.message}
           action={this.state.snackbar.action}
           autoHideDuration={this.state.snackbar.duration}
-          onActionTouchTap={() => {this.openCart()}}
+          onActionTouchTap={() => console.log('unsupported')}
           onRequestClose={() => {this.handleSnackbarRequestClose()}}
-        />
-        <CartDialog
-          open={openCart}
-          items={this.cartItems}
-          handleClose={() => this.handleCartClose()}
-          handleAdd={this.props.addItem}
-          handleRemove={this.props.removeItem}
-          handleOrder={() => console.log('place order')}
         />
 
       </div>

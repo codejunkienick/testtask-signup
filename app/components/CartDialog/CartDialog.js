@@ -16,7 +16,7 @@ export default class CartDialog extends Component {
     } = this.props;
     const actions = [
       <FlatButton
-        label='Закрыть'
+        label='Close'
         primary={true}
         onTouchTap={handleClose}
         style={{ color: '#b0bec5' }}

@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { push } from 'react-router-redux';
-import { AppBar, IconButton, Tab, Tabs } from 'material-ui';
+import { AppBar, IconButton, Drawer } from 'material-ui';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import FontFaceObserver from 'fontfaceobserver';
+import { add as addItem, remove as removeItem, load as loadItems } from 'redux/actions/order';
+import { StoreItem, CartDialog } from 'components';
 import styles from './App.css';
 import config from '../../config';
 
@@ -19,14 +22,15 @@ import config from '../../config';
 injectTapEventPlugin();
 
 const AppBarIcon = () => <NavigationMenu style={{ fill: 'rgb(150, 149, 149)' }} />;
-const AppBarTitle = () =>
-  <div style={{ display: 'flex', height: 'inherit' }}>
-    Starter Kit Lapis
-  </div>;
+const AppBarCartIcon = () => <ShoppingCart style={{ fill: 'rgb(150, 149, 149)', color: 'rgb(150, 149, 149)' }} />;
+
 
 @connect(
-  state => ({ router: state.get('router') }),
-  { pushState: push })
+  state => ({
+    order: state.get('order')
+  }),
+  { addItem, removeItem, loadItems, pushState: push }
+)
 @applyStyles(styles)
 class App extends Component {
   static propTypes = {
@@ -40,6 +44,7 @@ class App extends Component {
     this.state = {
       openDrawer: false,
       loading: true,
+      openCart: false
     };
   }
 
@@ -47,7 +52,6 @@ class App extends Component {
     window.addEventListener('resize', this.draw);
     this.setState({
       windowWidth: window.innerWidth,
-      openDrawer: this.shouldOpenDrawer(window.innerWidth),
       loading: false,
     });
     this.loadFonts();
@@ -57,21 +61,33 @@ class App extends Component {
     window.removeEventListener('resize', this.draw);
   }
 
-  shouldOpenDrawer(windowWidth) {
-    return windowWidth > 1024;
+  handleCartClose() {
+    this.setState({
+      openCart: false 
+    });  
   }
+
+  openCart() {
+    //TODO: On mobile move to other screen/fullscreen overlay. On desktop open popup
+    this.setState({ openCart: true });
+  }
+
+  get cartItems() {
+    const { order } = this.props;
+    const sheets = order.get('items');
+    return order.get('ordered').map((quantity, itemId) => {
+      const sheet = sheets.find((sheet) => sheet.id == itemId);
+      return {
+        ...sheet,
+        quantity,
+      } 
+    }).toArray();
+  }
+
   draw = () => {
     this.setState({
       windowWidth: window.innerWidth,
-      openDrawer: this.shouldOpenDrawer(window.innerWidth)
     });
-  }
-  appBarStyles = () => {
-    if (this.state.windowWidth > 1024) return { display: 'none' };
-    return {
-      backgroundColor: '#fefffa',
-      borderBottom: '3px solid #e2e4e0'
-    };
   }
 
   // Observe loading and set proper styles when fonts have loaded
@@ -85,11 +101,24 @@ class App extends Component {
     });
   }
 
-  handleTab(tab) {
-    this.props.pushState(tab.props['data-route']);
-  }
-
   render() {
+    const { openCart } = this.state;
+    const appBarStyles = {
+      backgroundColor: '#fefffa',
+      borderBottom: '3px solid #e2e4e0'
+    };
+    const appBarTitleStyles = {
+      fontFamily: 'Roboto Condensed, Helvetica, sans-serif',
+      color: '#666'
+    };
+    const NavLink = (props) => {
+      return (
+        <Link activeClassName={styles.activeDrawerLink} to={props.to} onClick={() => {
+          this.setState({openDrawer: (this.state.windowWidth < 1024) ? false : true});
+          this.props.pushState(props.to);
+        }}>{props.text}</Link>
+      );
+    }
     return (
       <div
         style={{ height: '100%' }}
@@ -98,25 +127,50 @@ class App extends Component {
         <Helmet {...config.app.head} />
         <AppBar
           zDepth={0}
-          style={this.appBarStyles()}
-          title={<AppBarTitle />}
+          style={appBarStyles}
+          title={
+            <div style={appBarTitleStyles}>Starter Kit. Codename: Lapis</div>
+          }
           iconElementLeft={<IconButton onTouchTap={() => this.setState({ openDrawer: !this.state.openDrawer })}><AppBarIcon /></IconButton>}
+          iconElementRight={<IconButton onTouchTap={() => this.setState({ openCart: !this.state.openCart })}><AppBarCartIcon /></IconButton>}
         />
-        <Tabs>
-          <Tab
-            label="Home"
-            data-route="/"
-            onActive={(tab) => { this.handleTab(tab); }}
-          />
-          <Tab
-            label="Todo"
-            data-route="/todo"
-            onActive={(tab) => { this.handleTab(tab); }}
-          />
-        </Tabs>
+        <Drawer
+          docked={false}
+          width={(this.state.windowWidth > 1024) ? 400 : 300}
+          open={this.state.openDrawer}
+          zDepth={0}
+          containerStyle={{
+            backgroundColor: '#fefffa',
+            fontFamily: 'Roboto Condensed'
+          }}
+          containerClassName={styles.drawer}
+          onRequestChange={(open) => this.setState({ openDrawer: open })}
+        >
+          <div styleName="drawerContent">
+            <h1 styleName="drawerLogo">
+              STARTER KIT. <br />
+              CODENAME: LAPIS
+            </h1>
+            <ul styleName="nav">
+              <li><NavLink to="/home" text="Home" /></li>
+              <li><NavLink to="/Todo" text="Todo" /></li>
+            </ul>
+            <div styleName="drawerFooter">
+              github link
+            </div>
+          </div>
+        </Drawer>
         <div styleName="appContent">
           {this.props.children}
         </div>
+        <CartDialog
+          open={openCart}
+          items={this.cartItems}
+          handleClose={() => this.handleCartClose()}
+          handleAdd={this.props.addItem}
+          handleRemove={this.props.removeItem}
+          handleOrder={() => console.log('place order')}
+        />
       </div>
     );
   }

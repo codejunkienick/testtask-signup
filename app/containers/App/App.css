@@ -1,6 +1,12 @@
 @import 'global';
 .app {
 }
+.appTitle {
+  color: #444;
+}
+:global(.fonts-loaded) .appTitle {
+  font-family: 'Roboto Condensed';
+}
 .appContent {
   width: 100%;
   word-break: break-word;
@@ -24,12 +30,12 @@ small, .font_small {font-size: 0.707em;}
   flex: 1;
   flex-direction: column;
 }
-
 .drawerLogo {
   margin: 50px 68px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  font-size: 36px;
   @media screen and (max-width: 1024px) {
     margin: 25px 34px;
     display: flex;
@@ -46,7 +52,7 @@ small, .font_small {font-size: 0.707em;}
   display: inline-block;
   position: absolute;
   left: -18px;
-  top: -2px;
+  top: -1px;
   font-size: 17px;
   font-family: inherit;
 }
