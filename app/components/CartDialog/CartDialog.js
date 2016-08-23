@@ -19,19 +19,19 @@ export default class CartDialog extends Component {
         label='Закрыть'
         primary={true}
         onTouchTap={handleClose}
-        style={{color: '#b0bec5'}}
+        style={{ color: '#b0bec5' }}
         className='btn'
       />,
     ];
     if (items.length > 0) {
       actions.push(
       <RaisedButton
-        label='Заказать'
+        label='Order'
         primary={true}
         keyboardFocused={true}
         onTouchTap={handleOrder}
         className='btn'
-        style={{minWidth: 160, marginLeft: 8}}
+        style={{ minWidth: 160, marginLeft: 8 }}
       />);
     }
     return (
@@ -41,9 +41,9 @@ export default class CartDialog extends Component {
           open={open}
           onRequestClose={handleClose}
           autoScrollBodyContent={true}
-          contentStyle={{maxWidth: 460}}
+          contentStyle={{ maxWidth: 460 }}
         >
-          <h3 className={styles.title}>{(items.length > 0) ? 'Вы заказали' : 'Корзина пуста'}</h3>
+          <h3 className={styles.title}>{(items.length > 0) ? 'Your order' : 'Cart is empty'}</h3>
           <div className={styles.items}>
             {(items.length > 0) && items.map((item, idx) => {
               return (
@@ -54,11 +54,11 @@ export default class CartDialog extends Component {
                         <img src={item.preview} className={styles.preview} alt=""/>
                       </div>
                       <div className="col-xs-8">
-                        <div className={styles.itemName + ' font-condensed'}>NERD STICKERS: {item.title}</div>
-                        <div className={styles.itemQuantity + ' font-condensed'}>Колличество: {item.quantity}</div>
+                        <div className={styles.itemName + ' font-condensed'}>Title: {item.title}</div>
+                        <div className={styles.itemQuantity + ' font-condensed'}>Quantity: {item.quantity}</div>
                         <div className={styles.itemBtns}>
                             <RaisedButton
-                              label="Добавить"
+                              label="Add"
                               primary={true}
                               onTouchTap={() => {handleAdd(item.id)}}
                               className="btn"

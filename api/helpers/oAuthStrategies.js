@@ -4,7 +4,7 @@ import {Strategy as JavaWebTokenStrategy, ExtractJwt} from 'passport-jwt';
 import {Membership, Account} from '../models';
 import config from '../config';
 
-export function JwtStategy() {
+export function jwtStategy() {
   return new JavaWebTokenStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeader(),
     secretOrKey: config.secret
@@ -22,7 +22,7 @@ export function JwtStategy() {
   })
 }
 
-export function FacebookTokenStrategy() {
+export function facebookTokenStrategy() {
   if (!config.facebook.key || !config.facebook.secret) throw Error("No facebook secret or key is present for oAuth");
   return new FBtStrategy({
       clientID: config.facebook.key,
@@ -64,7 +64,7 @@ export function FacebookTokenStrategy() {
   )
 }
 
-export function VkontakteTokenStrategy() {
+export function vkontakteTokenStrategy() {
   if (!config.vk.clientId || !config.vk.secret) throw Error("No vk secret or key is present for oAuth");
   return new VKtStrategy({
       clientID: config.vk.clientId,

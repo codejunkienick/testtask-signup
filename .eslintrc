@@ -7,6 +7,8 @@
   },
   "rules": {
     "strict": 0,
+    "babel/generator-star-spacing": 1,
+    "generator-star-spacing": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/no-multi-comp": 0,
     "import/default": 0,

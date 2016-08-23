@@ -15,7 +15,7 @@ export default class StoreItem extends Component {
         <Paper zDepth={2} style={{padding: "20px 5px 10px 5px"}}>
           <h4 styleName="title">{title}</h4>
           <img src={preview} styleName="previewImage"/>
-          <div styleName="seeAllBtn">Посмотреть все</div>
+          <div styleName="seeAllBtn">Show all</div>
         </Paper>
         <div styleName="price">{price} RUB</div>
         <div styleName="btnWrapper">
@@ -23,9 +23,9 @@ export default class StoreItem extends Component {
             onClick={() => {onAdd(this.props.id, this.props.title)}}
             label="Primary"
             primary={true}
-            label={(!ordered) ? "Добавить" : "Еще +1"}
+            label={(!ordered) ? "Add" : "Add +1"}
             styleName="add"
-            style={{margin: "0"}}/>
+            style={{ margin: "0" }}/>
         </div>
       </div>
     );

@@ -1,50 +1,35 @@
 import React, { Component } from 'react';
-import config from '../../config';
+import applyStyles from 'react-css-modules';
 import Helmet from 'react-helmet';
-import { Spinner } from 'components';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { StoreItem, CartDialog } from 'components';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart'; 
 import { FlatButton, Snackbar } from 'material-ui';
-import { add as addItem, remove as removeItem, load as loadItems } from 'redux/actions/order';
-import CSSModules from 'react-css-modules';
 import styles from './Home.css';
+import { StoreItem, CartDialog } from 'components';
+import { add as addItem, remove as removeItem, load as loadItems } from 'redux/actions/order';
 
 @connect(
   state => ({
     order: state.get('order')
   }),
-  {addItem, removeItem, loadItems}
+  { addItem, removeItem, loadItems }
 )
-@CSSModules(styles)
+@applyStyles(styles)
 export default class Home extends Component {
   constructor(props) {
-    super(props)
-
+    super(props);
     this.state = {
       snackbar: {
         open: false,
-        message: '$item добавлен в корзину',
+        message: '$item added in cart',
         duration: 8000
       },
       openCart: false
-    }
+    };
   }
   componentWillMount() {
     this.props.loadItems(); 
-  }
-
-  get cartItems() {
-    const { order } = this.props;
-    const sheets = order.get('items');
-    return order.get('ordered').map((quantity, itemId) => {
-      const sheet = sheets.find((sheet) => sheet.id == itemId);
-      return {
-        ...sheet,
-        quantity,
-      } 
-    }).toArray();
   }
 
   handleCartClose() {
@@ -67,10 +52,10 @@ export default class Home extends Component {
       snackbar: {
         ...this.state.snackbar,
         open: true,
-        message: 'Набор ' + itemName + ' был добавлен в корзину',
+        message: 'Set ' + itemName + ' was added in cart',
         action: 'Заказать'
       }
-    })
+    });
   }
 
   onAddItem(itemId, name) {
@@ -78,9 +63,21 @@ export default class Home extends Component {
     this.openSnackbar(name);
   }
 
+  get cartItems() {
+    const { order } = this.props;
+    const sheets = order.get('items');
+    return order.get('ordered').map((quantity, itemId) => {
+      const sheet = sheets.find((sheet) => sheet.id == itemId);
+      return {
+        ...sheet,
+        quantity,
+      } 
+    }).toArray();
+  }
+
   openCart() {
     //TODO: On mobile move to other screen/fullscreen overlay. On desktop open popup
-    this.setState({openCart: true})
+    this.setState({ openCart: true });
   }
 
   render() {
@@ -95,16 +92,16 @@ export default class Home extends Component {
         <Helmet title="Home"/>
         <header styleName="header">
           <FlatButton
-            label="Корзина"
+            label="Cart"
             backgroundColor="#7782bf"
             hoverColor="#9da8ea"
             rippleColor="#fff"
             labelPosition="after"
             primary={false}
-            style={{color: '#fff', position: 'absolute', top: 20, right: 80}}
+            style={{ color: '#fff', position: 'absolute', top: 20, right: 80 }}
             styleName="cartBtn" 
             icon={<ShoppingCart />}
-            onClick={() => {this.openCart()}}
+            onClick={() => { this.openCart() }}
           />
           <h1 styleName="logo">
             STARTER KIT. <br />
@@ -114,16 +111,15 @@ export default class Home extends Component {
         <section styleName="items">
           <div className="container">
             <div className="row">
-              { order.get('items') && order.get('items').map((sheet, idx) => {
-                return (
+              {order.get('items') && order.get('items').map((sheet, idx) => 
                   <div className="col-md-4" key={idx}>
                     <StoreItem 
                       {...sheet} 
-                      onAdd={(id, title) => {this.onAddItem(id, title)}} 
-                      ordered={(order.get('ordered').has(sheet.id)) ? true : false}/>
+                      onAdd={(id, title) => { this.onAddItem(id, title) }} 
+                      ordered={(order.get('ordered').has(sheet.id)) ? true : false}
+                    />
                   </div>
-                  );
-              }) }
+              )}
             </div>
           </div>
         </section>
@@ -142,10 +138,11 @@ export default class Home extends Component {
         <section styleName="info">
           <div className="container">
             <div className="row">
-              <div
+              <div 
                 styleName="infoBlock" 
-                className="col-md-4 col-xs-12">
-                <h3 styleName="infoBlockTitle">Доставка</h3>
+                className="col-md-4 col-xs-12"
+              >
+                <h3 styleName="infoBlockTitle">Title 1</h3>
                 <img styleName="infoBlockImage" src={mapIcon}/>
                 <p styleName="infoBlockText">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
@@ -153,17 +150,19 @@ export default class Home extends Component {
               </div>
               <div 
                 styleName="infoBlock" 
-                className="col-md-4 col-xs-12">
-                <h3 styleName="infoBlockTitle">Оплата</h3>
+                className="col-md-4 col-xs-12"
+              >
+                <h3 styleName="infoBlockTitle">Title 1</h3>
                 <img styleName="infoBlockImage" src={creditIcon}/>
                 <p styleName="infoBlockText">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                 </p>
               </div>
-              <div
+              <div 
                 styleName="infoBlock" 
-                className="col-md-4 col-xs-12">
-                <h3 styleName="infoBlockTitle">О нас</h3>
+                className="col-md-4 col-xs-12"
+              >
+                <h3 styleName="infoBlockTitle">Title 3</h3>
                 <img styleName="infoBlockImage" src={lightbulbIcon}/>
                 <p styleName="infoBlockText">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
@@ -174,7 +173,7 @@ export default class Home extends Component {
         </section>
         <footer styleName="footer">
           <div styleName="copyright">2016 &copy; localhost</div>
-          <div styleName="developers">Разработано <a href="http://katakana.xyz">katakana.xyz</a></div>
+          <div styleName="developers">Developed by <a href="http://katakana.xyz">katakana.xyz</a></div>
         </footer>
         <Snackbar
           styleName="snackbar"

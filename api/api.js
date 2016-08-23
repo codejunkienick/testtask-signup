@@ -9,49 +9,49 @@ import _ from 'lodash';
 import SocketIo from 'socket.io';
 import mongoose from 'mongoose';
 import passport from 'passport';
-import {Account} from 'models';
-import {FacebookTokenStrategy, VkontakteTokenStrategy, JwtStategy} from 'helpers/oAuthStrategies';
-import authenticateToken from 'helpers/authenticateToken';
+import mongo from 'connect-mongo';
+import { Account } from './models';
+import { facebookTokenStrategy, vkontakteTokenStrategy, jwtStategy } from './helpers/oAuthStrategies';
+import authenticateToken from './helpers/authenticateToken';
+import { logger, middleware as requestMiddleware } from './helpers/logger';
 import * as routes from './routes';
 import handleUserSocket from './ws';
-import {logger, middleware as requestMiddleware} from 'helpers/logger';
 import config from './config';
 
 const app = express();
-console.log('coolfeature');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = mongo(session);
 const server = new http.Server(app);
 const io = new SocketIo(server);
 
-//Do not send any data to non-authenticated sockets
-_.each(io.nsps, function (nsp) {
-  nsp.on('connect', function (socket) {
+// Do not send any data to non-authenticated sockets
+_.each(io.nsps, (nsp) => {
+  nsp.on('connect', (socket) => {
     if (!socket.auth) {
       delete nsp.connected[socket.id];
     }
   });
 });
 
-//Setup mongoose connection
-mongoose.Promise = Promise; //ES6 promieses
+// Setup mongoose connection
+mongoose.Promise = Promise;
 mongoose.connect(config.server.databaseURL);
-const sessionStore = new MongoStore({mongooseConnection: mongoose.connection}, function (err) {
-  console.log(err || 'connect-mongodb setup ok');
-});
+const sessionStore = new MongoStore({
+  mongooseConnection: mongoose.connection
+}, (err) => console.log(err || 'connect-mongodb setup ok'));
 
 app.use(cookieParser(config.secret));
 app.use(session({
   secret: config.secret,
   store: sessionStore,
   key: 'usersid',
-  cookie: {maxAge: 1200000},
+  cookie: { maxAge: 1200000 },
   resave: false,
   saveUninitialized: false
 }));
 app.use(httpLogger('dev'));
 app.use(requestMiddleware);
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -65,27 +65,26 @@ app.use(passport.session());
 // });
 app.use('/static', express.static(config.projectDir + '/public'));
 
-//Setup routes
-for (let route in routes) {
-  app.use('/' + route + '/', routes[route]);
-}
+// Setup routes
+Object.keys(routes).forEach((route) => app.use('/' + route + '/', routes[route]));
 
 // Log errors
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   if (err) {
     logger.error(err);
     next(err);
   }
 });
 
-//Setup passport middleware for authentication
+// Setup passport middleware for authentication
 passport.use(Account.createStrategy());
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
-passport.use(JwtStategy());
+passport.use(jwtStategy());
+
 // Uncomment if key and secret are present in config
-// passport.use(FacebookTokenStrategy());
-// passport.use(VkontakteTokenStrategy());
+// passport.use(facebookTokenStrategy());
+// passport.use(vkontakteTokenStrategy());
 
 
 if (config.apiPort) {
@@ -99,28 +98,28 @@ if (config.apiPort) {
 
   io.listen(runnable);
 
-  io.on('connection', function (socket) {
-    socket.on('authenticate', async function (data) {
+  io.on('connection', (socket) => {
+    socket.on('authenticate', async (data) => {
       try {
         const user = await authenticateToken(data.token);
         logger.debug('Authenticated socket ' + socket.id);
+        // Code smell. need to workaround
         socket.auth = true;
         socket.user = user;
-        //Restore socket to receive data from server
-        _.each(io.nsps, function (nsp) {
-          if (_.find(nsp.sockets, {id: socket.id})) {
+        // Restore socket to receive data from server
+        _.each(io.nsps, (nsp) => {
+          if (_.find(nsp.sockets, { id: socket.id })) {
             nsp.connected[socket.id] = socket;
             socket.emit('authenticated');
             handleUserSocket(socket);
           }
         });
-        testPushNotification();
       } catch (err) {
         logger.error(err);
       }
     });
 
-    setTimeout(function () {
+    setTimeout(() => {
       // If the socket didn't authenticate, disconnect it
       if (!socket.auth) {
         logger.debug('Disconnecting socket ' + socket.id);
