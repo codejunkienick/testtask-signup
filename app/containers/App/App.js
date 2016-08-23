@@ -156,7 +156,7 @@ class App extends Component {
               <li><NavLink to="/Todo" text="Todo" /></li>
             </ul>
             <div styleName="drawerFooter">
-              github link
+              <a href="http://github.com/codejunkienick/starter-lapis">Source Code</a>
             </div>
           </div>
         </Drawer>
