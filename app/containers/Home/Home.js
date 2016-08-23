@@ -53,7 +53,7 @@ export default class Home extends Component {
         ...this.state.snackbar,
         open: true,
         message: 'Set ' + itemName + ' was added in cart',
-        action: 'Заказать'
+        action: 'Order'
       }
     });
   }
