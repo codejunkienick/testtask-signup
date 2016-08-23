@@ -33,12 +33,11 @@ function logPageView() {
   }
 }
 
-function initSocket() {
-  const socket = io('', { path: '/ws' });
-  return socket;
-}
-
-global.socket = initSocket();
+// function initSocket() {
+//   const socket = io('', { path: '/ws' });
+//   return socket;
+// }
+// global.socket = initSocket();
 
 const component = (
   <Router

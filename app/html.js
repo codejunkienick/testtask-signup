@@ -1,7 +1,8 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import Helmet from 'react-helmet';
+import appStyles from './containers/App/App.css';
 /**
  * Wrapper component containing HTML metadata and boilerplate tags.
  * Used in server-side code only to wrap the string output of the
@@ -23,37 +24,43 @@ export default class Html extends Component {
   }
 
   render() {
-    const {assets, component, store, css} = this.props;
+    const { assets, component, store } = this.props;
     const content = component ? ReactDOM.renderToString(component) : '';
     const head = Helmet.rewind();
 
     return (
-      <html lang="ru-ru">
+      <html lang="en-US">
         <head>
-          {head.base.toComponent()}
-          {head.title.toComponent()}
-          {head.meta.toComponent()}
-          {head.link.toComponent()}
-          {head.script.toComponent()}
+          { head.base.toComponent() }
+          { head.title.toComponent() }
+          { head.meta.toComponent() }
+          { head.link.toComponent() }
+          { head.script.toComponent() }
 
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {/* styles (will be present only in production with webpack extract text plugin) */}
           {Object.keys(assets.styles).map((style, key) =>
-            <link href={assets.styles[style]} key={key} media="screen, projection"
-                  rel="stylesheet" type="text/css" charSet="UTF-8"/>
+            <link
+              href={assets.styles[style]}
+              key={key}
+              media="screen, projection"
+              rel="stylesheet"
+              type="text/css"
+              charSet="UTF-8"
+            />
           )}
-
           {/* (will be present only in development mode) */}
           {/* outputs a <style/> tag with all bootstrap styles + App.scss + it could be CurrentPage.scss. */}
           {/* can smoothen the initial style flash (flicker) on page load in development mode. */}
           {/* ideally one could also include here the style for the current page (Home.scss, About.scss, etc) */}
-          { Object.keys(assets.styles).length === 0 ? <style dangerouslySetInnerHTML={{__html: require('./containers/App/App.css')._style}}/> : null }
+          { Object.keys(assets.styles).length === 0 &&
+            <style dangerouslySetInnerHTML={{ __html: appStyles._style }} /> }
         </head>
         <body>
-          <div id="content" dangerouslySetInnerHTML={{__html: content}}/>
-          <script dangerouslySetInnerHTML={{__html: `window.reduxState=${serialize(store.getState())};`}} charSet="UTF-8"/>
-          <script src={assets.javascript.main}  defer="true" charSet="UTF-8"/>
+          <div id="content" dangerouslySetInnerHTML={{ __html: content }} />
+          <script dangerouslySetInnerHTML={{ __html: `window.reduxState=${serialize(store.getState())};` }} charSet="UTF-8" />
+          <script src={assets.javascript.main} defer="true" charSet="UTF-8" />
         </body>
       </html>
     );
