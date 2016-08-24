@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import applyStyles from 'react-css-modules';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -35,8 +36,10 @@ const AppBarCartIcon = () => <ShoppingCart style={{ fill: 'rgb(150, 149, 149)', 
 class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
-    user: PropTypes.object,
-    pushState: PropTypes.func.isRequired
+    pushState: PropTypes.func.isRequired,
+    addItem: PropTypes.func.isRequired,
+    loadItems: PropTypes.func.isRequired,
+    order: ImmutablePropTypes.map
   };
 
   constructor(props) {
@@ -68,7 +71,6 @@ class App extends Component {
   }
 
   openCart() {
-    //TODO: On mobile move to other screen/fullscreen overlay. On desktop open popup
     this.setState({ openCart: true });
   }
 

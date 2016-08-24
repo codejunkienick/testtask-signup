@@ -7,8 +7,9 @@ export default function postcss(webpack) {
             path: ['app/css'],
         }),
         require("postcss-cssnext")(),
-        require("postcss-nested")(),
         // add your "plugins" here
+        require("postcss-nested")(),
+        require("postcss-pxtorem")(),
         // and if you want to compress,
         // just use css-loader option that already use cssnano under the hood
         require("postcss-browser-reporter")(),
