@@ -13,15 +13,18 @@ function formatUrl(path) {
   // Prepend `/api` to relative URL, to proxy to API server.
   return '/api' + adjustedPath;
 }
-
+const headers = new Headers({
+  'Accept': 'application/json, text/plain',
+  "Content-Type": "application/json",
+});
 const defaultOptions = {
+  headers,
   method: 'GET',
   cache: 'default'
 };
 
 function callApi(endpoint, options = defaultOptions) {
   const fullUrl = formatUrl(endpoint);
-  console.log(fullUrl);
   return fetch(fullUrl, options)
     .then(response =>
       response.json().then(json => ({ json, response }))
@@ -43,9 +46,9 @@ function get(endpoint) { return callApi(endpoint); }
 
 function post(endpoint, body) {
   return callApi(endpoint, {
+    ...defaultOptions,
     method: 'POST',
-    cache: 'default',
-    body
+    body: JSON.stringify(body)
   });
 }
 

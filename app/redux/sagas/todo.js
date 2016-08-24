@@ -11,8 +11,8 @@ export function* getTodosAsync() {
     yield put({type: TODOS.FAILURE, error});
 }
 //TODO: Implement this method
-export function* addTodoAsync(todo) {
-  const {response, error} = yield call(api.addTodo, todo);
+export function* addTodoAsync(action) {
+  const {response, error} = yield call(api.addTodo, action.todo);
   if(response)
     yield put({type: ADD.SUCCESS, response});
   else
