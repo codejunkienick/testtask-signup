@@ -1,8 +1,8 @@
-export default function postcss(webpack) {
+function postcss(webpack) {
   return function() {
     return {
       plugins: [
-        require("postcss-import")({ 
+        require("postcss-import")({
           addDependencyTo: webpack,
             path: ['app/css'],
         }),
@@ -18,3 +18,6 @@ export default function postcss(webpack) {
     };
   }
 }
+
+
+module.exports = postcss;

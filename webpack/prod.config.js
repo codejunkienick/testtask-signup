@@ -20,7 +20,7 @@ module.exports = {
   context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
-      './src/client.js',
+      './app/client.js',
     ]
   },
   output: {
@@ -42,11 +42,11 @@ module.exports = {
       { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' }
     ]
   },
-  postcss: postcss(),
+  postcss: postcss(webpack),
   progress: true,
   resolve: {
     modulesDirectories: [
-      'src',
+      'app',
       'node_modules'
     ],
     extensions: ['', '.json', '.js', '.jsx']
