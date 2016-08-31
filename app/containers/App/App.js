@@ -66,8 +66,8 @@ class App extends Component {
 
   handleCartClose() {
     this.setState({
-      openCart: false 
-    });  
+      openCart: false
+    });
   }
 
   openCart() {
@@ -82,7 +82,7 @@ class App extends Component {
       return {
         ...sheet,
         quantity,
-      } 
+      }
     }).toArray();
   }
 
