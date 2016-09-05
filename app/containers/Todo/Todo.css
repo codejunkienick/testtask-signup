@@ -6,3 +6,9 @@
   font-size: 90px;
   margin-bottom: 0;
 } 
+
+.todoItem {
+  font-size: 22px;
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}

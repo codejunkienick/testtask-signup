@@ -14,5 +14,5 @@ export const todos = {
 
 export const load = () => action(TODOS.REQUEST);
 export const add = (text) => action(ADD.REQUEST, {todo: text});
-export const remove = (itemId) => action(REMOVE.REQUEST, {todoId});
+export const remove = (id) => action(REMOVE.REQUEST, {id});
 

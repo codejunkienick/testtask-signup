@@ -3,7 +3,7 @@ import { TODOS, ADD, REMOVE }  from '../actions/todo';
 
 const initialState = Immutable.fromJS({
   loaded: false,
-  todos: []
+  todos: Immutable.List() 
 }) 
 
 export default function todo(state = initialState, action = {}) {
@@ -12,9 +12,13 @@ export default function todo(state = initialState, action = {}) {
     case TODOS.REQUEST: 
       return state.set('loading', true);
     case TODOS.SUCCESS:
-      return state.delete('loading').set('loaded', true).set('items', response.items);
+      return state.delete('loading').set('loaded', true).set('items', Immutable.List(response));
     case TODOS.FAILURE:
       return state.delete('loading').set('loaded', false).set('error', error);
+    case ADD.SUCCESS: 
+      return state.set('items', state.get('items').push(action.todo));
+    case REMOVE.SUCCESS: 
+      return state.set('items', Immutable.List(response));
     default:
       return state;
   }
