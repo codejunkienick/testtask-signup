@@ -48,11 +48,10 @@ if (config.apiPort) {
     console.log('----\n==>  API is running on port %s', config.apiPort);
     console.log('==>  Send requests to http://%s:%s', config.apiHost, config.apiPort);
   });
-
-  io.listen(runnable);
   io.on('connection', (socket) => {
     handleUserSocket(socket);
   });
+  io.listen(runnable);
 } else {
   console.error('==>     ERROR: No PORT environment variable has been specified');
 }

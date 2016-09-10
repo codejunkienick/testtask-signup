@@ -5,15 +5,22 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { RaisedButton, Snackbar, Paper, TextField } from 'material-ui';
+import { signup } from 'redux/actions/form';
 import  * as Events from 'utils/events';
 import styles from './Home.css';
 
-type Props = {
-  
+declare var socket: Object;
+
+type Props = {  
+  signup: () => void;
+  fail: () => void;
+  success: () => void;
 }
 
 
 @connect(
+  state => { return { form: state.get('form') } },
+  { signup: signup.request, fail: signup.failure, success: signup.success }
 )
 @applyStyles(styles)
 export default class Home extends Component {
@@ -46,11 +53,27 @@ export default class Home extends Component {
     };
   }
 
+  componentDidMount() {
+    socket.on('signup.error', (error) => { this.props.fail(error) });
+    socket.on('signup.success', () => { this.props.success() });
+  }
+
   handleNicknameChange(event: Event) { this.setState({nicknameInput: Events.target(event, HTMLInputElement).value}); }
   handleEmailChange(event: Event) { this.setState({emailInput: Events.target(event, HTMLInputElement).value}); }
-  handlePhoneChange(event: Event) { this.setState({emailInput: Events.target(event, HTMLInputElement).value}); }
+  handlePhoneChange(event: Event) { this.setState({phoneInput: Events.target(event, HTMLInputElement).value}); }
   handlePasswordChange(event: Event) { this.setState({passwordInput: Events.target(event, HTMLInputElement).value}); }
   handlePassword2Change(event: Event) { this.setState({password2Input: Events.target(event, HTMLInputElement).value}); }
+  handleSubmit() {
+    const { 
+      nicknameInput, 
+      phoneInput,
+      emailInput,
+      passwordInput,
+      password2Input
+    } = this.state;
+    this.props.signup();
+    socket.emit('signup', {email: emailInput, phone: phoneInput, nickname: nicknameInput, password: passwordInput});
+  }
   
   componentWillMount() {
   }
@@ -77,6 +100,7 @@ export default class Home extends Component {
   render() {
     const {
       snackbar,
+      phoneInput,
       nicknameInput,
       emailInput,
       passwordInput,
@@ -106,7 +130,7 @@ export default class Home extends Component {
               <TextField
                 hintText="phone"
                 floatingLabelText="Type in your phone number"
-                value={emailInput}
+                value={phoneInput}
                 onChange={this.handlePhoneChange.bind(this)}
               />
             </div>
@@ -127,7 +151,7 @@ export default class Home extends Component {
               />
             </div>
             <div styleName="btn-wrapper">
-              <RaisedButton styleName="btn" label="Signup" primary={true} /> 
+              <RaisedButton styleName="btn" label="Signup" primary={true} onTouchTap={this.handleSubmit.bind(this)} /> 
             </div>
           </div>
         </Paper>
