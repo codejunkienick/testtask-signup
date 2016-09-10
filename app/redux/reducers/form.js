@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { TODOS, ADD, REMOVE }  from '../actions/todo';
+import { TODOS, ADD, REMOVE }  from '../actions/form';
 
 const initialState = Immutable.fromJS({
   loaded: false,

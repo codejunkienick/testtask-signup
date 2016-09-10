@@ -1,4 +1,3 @@
-import { Account } from './models';
 import { logger } from './helpers/logger';
 export default function handleUserSocket(socket) {
   try {

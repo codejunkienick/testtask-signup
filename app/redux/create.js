@@ -1,5 +1,4 @@
 import { createStore as _createStore, applyMiddleware, compose } from 'redux';
-import createMiddleware from './middleware/clientMiddleware';
 import { routerMiddleware } from 'react-router-redux';
 import Immutable from 'immutable';
 import createSagaMiddleware from 'redux-saga';
@@ -11,7 +10,7 @@ export default function createStore(history, data) {
   const reduxRouterMiddleware = routerMiddleware(history);
   const sagaMiddleware = createSagaMiddleware()
 
-  const middleware = [createMiddleware(), reduxRouterMiddleware, sagaMiddleware];
+  const middleware = [reduxRouterMiddleware, sagaMiddleware];
 
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {

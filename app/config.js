@@ -15,17 +15,17 @@ module.exports = Object.assign({
   apiHost: process.env.APIHOST || 'localhost',
   apiPort: process.env.APIPORT,
   app: {
-    title: 'Starter Lapis',
+    title: 'Test Task',
     description: '',
     head: {
-      titleTemplate: 'Starter Lapis - %s',
+      titleTemplate: 'Test Task - %s',
       meta: [
         { name: 'description', content: '' },
         { charset: 'utf-8' },
-        { property: 'og:site_name', content: 'Starter Lapis' },
+        { property: 'og:site_name', content: 'Test Task' },
         { property: 'og:image', content: 'http://katakana.xyz/logo.png' },
         { property: 'og:locale', content: 'ru_RU' },
-        { property: 'og:title', content: 'Starter Lapis' },
+        { property: 'og:title', content: 'Test Task' },
         { property: 'og:description', content: '' },
         { property: 'og:card', content: 'summary' },
         { property: 'og:site', content: '@codejunkienick' },

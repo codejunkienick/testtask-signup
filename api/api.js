@@ -7,42 +7,17 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import _ from 'lodash';
 import SocketIo from 'socket.io';
-import mongoose from 'mongoose';
-import passport from 'passport';
-import mongo from 'connect-mongo';
-import { Account } from './models';
-import { facebookTokenStrategy, vkontakteTokenStrategy, jwtStategy } from './helpers/oAuthStrategies';
-import authenticateToken from './helpers/authenticateToken';
 import { logger, middleware as requestMiddleware } from './helpers/logger';
-import * as routes from './routes';
 import handleUserSocket from './ws';
 import config from './config';
 
 const app = express();
-const MongoStore = mongo(session);
 const server = new http.Server(app);
 const io = new SocketIo(server);
-
-// Do not send any data to non-authenticated sockets
-_.each(io.nsps, (nsp) => {
-  nsp.on('connect', (socket) => {
-    if (!socket.auth) {
-      delete nsp.connected[socket.id];
-    }
-  });
-});
-
-// Setup mongoose connection
-mongoose.Promise = Promise;
-mongoose.connect(config.server.databaseURL);
-const sessionStore = new MongoStore({
-  mongooseConnection: mongoose.connection
-}, (err) => console.log(err || 'connect-mongodb setup ok'));
 
 app.use(cookieParser(config.secret));
 app.use(session({
   secret: config.secret,
-  store: sessionStore,
   key: 'usersid',
   cookie: { maxAge: 1200000 },
   resave: false,
@@ -52,21 +27,8 @@ app.use(httpLogger('dev'));
 app.use(requestMiddleware);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(passport.initialize());
-app.use(passport.session());
 
-// Uncomment to enable CORS
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-AUTHENTICATION, X-IP, Content-Type, Accept');
-//   res.header('Access-Control-Allow-Credentials', true);
-//   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//   next();
-// });
 app.use('/static', express.static(config.projectDir + '/public'));
-
-// Setup routes
-Object.keys(routes).forEach((route) => app.use('/' + route + '/', routes[route]));
 
 // Log errors
 app.use((err, req, res, next) => {
@@ -75,16 +37,6 @@ app.use((err, req, res, next) => {
     next(err);
   }
 });
-
-// Setup passport middleware for authentication
-passport.use(Account.createStrategy());
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
-passport.use(jwtStategy());
-
-// Uncomment if key and secret are present in config
-// passport.use(facebookTokenStrategy());
-// passport.use(vkontakteTokenStrategy());
 
 
 if (config.apiPort) {
@@ -99,33 +51,7 @@ if (config.apiPort) {
   io.listen(runnable);
 
   io.on('connection', (socket) => {
-    socket.on('authenticate', async (data) => {
-      try {
-        const user = await authenticateToken(data.token);
-        logger.debug('Authenticated socket ' + socket.id);
-        // Code smell. need to workaround
-        socket.auth = true;
-        socket.user = user;
-        // Restore socket to receive data from server
-        _.each(io.nsps, (nsp) => {
-          if (_.find(nsp.sockets, { id: socket.id })) {
-            nsp.connected[socket.id] = socket;
-            socket.emit('authenticated');
-            handleUserSocket(socket);
-          }
-        });
-      } catch (err) {
-        logger.error(err);
-      }
-    });
-
-    setTimeout(() => {
-      // If the socket didn't authenticate, disconnect it
-      if (!socket.auth) {
-        logger.debug('Disconnecting socket ' + socket.id);
-        socket.disconnect('unauthorized');
-      }
-    }, 1000);
+    handleUserSocket(socket);
   });
 } else {
   console.error('==>     ERROR: No PORT environment variable has been specified');

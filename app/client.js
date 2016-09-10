@@ -23,27 +23,16 @@ const history = syncHistoryWithStore(browserHistoryWithScroll, store, {
   }
 });
 
-if (process.env.NODE_ENV === 'production') {
-  ga.initialize(''); // Add Google ID for Google Analytics
+function initSocket() {
+  const socket = io('', { path: '/ws' });
+  return socket;
 }
-
-function logPageView() {
-  if (process.env.NODE_ENV === 'production') {
-    ga.pageview(window.location.pathname);
-  }
-}
-
-// function initSocket() {
-//   const socket = io('', { path: '/ws' });
-//   return socket;
-// }
-// global.socket = initSocket();
+global.socket = initSocket();
 
 const component = (
   <Router
     render={(props) => <RouterContext {...props} filter={item => !item.deferred} />}
     history={history}
-    onUpdate={logPageView}
   >
     {getRoutes(store)}
   </Router>

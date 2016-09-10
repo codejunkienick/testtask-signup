@@ -1,7 +1,7 @@
 import { takeLatest } from 'redux-saga'
 import { put, fork, call, select } from 'redux-saga/effects'
 import { api } from 'services';
-import { TODOS, ADD, REMOVE } from 'redux/actions/todo';
+import { TODOS, ADD, REMOVE } from 'redux/actions/form';
 
 export function* getTodosAsync() {
   const {response, error} = yield call(api.getTodos);

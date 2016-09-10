@@ -43,7 +43,6 @@ function callApi(endpoint, options = defaultOptions) {
 }
 
 function get(endpoint) { return callApi(endpoint); }
-
 function post(endpoint, body) {
   return callApi(endpoint, {
     ...defaultOptions,
@@ -52,9 +51,3 @@ function post(endpoint, body) {
   });
 }
 
-export const getAvailableItems = () => get('/order/available-items');
-
-export const getTodos = () => get('/todo');
-export const addTodo = todo => post('/todo/add', todo);
-export const removeTodo = id => post('/todo/remove', { id });
-export const markTodo = id => post('/todo/mark', { id });
