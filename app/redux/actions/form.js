@@ -9,6 +9,6 @@ export const SIGNUP = createRequestTypes(prefix, 'SIGNUP');
 export const signup = {
   request: () => action(SIGNUP.REQUEST),
   success: () => action(SIGNUP.SUCCESS),
-  failure: (error: Object) => action(SIGNUP.FAILURE),
+  failure: (error: string) => action(SIGNUP.FAILURE, {error}),
 }
 

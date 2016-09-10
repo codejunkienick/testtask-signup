@@ -4,10 +4,12 @@ import applyStyles from 'react-css-modules';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { RaisedButton, Snackbar, Paper, TextField } from 'material-ui';
+import { RaisedButton, Paper, TextField } from 'material-ui';
 import { signup } from 'redux/actions/form';
+import { push } from 'react-router-redux';
 import  * as Events from 'utils/events';
 import styles from './Home.css';
+import * as validators from 'utils/validation';
 
 declare var socket: Object;
 
@@ -15,21 +17,28 @@ type Props = {
   signup: () => void;
   fail: () => void;
   success: () => void;
+  push: (route: string) => void;
+  apiError: string;
+  signedUp: boolean;
 }
 
 
 @connect(
-  state => { return { form: state.get('form') } },
-  { signup: signup.request, fail: signup.failure, success: signup.success }
+  state => { return { 
+    apiError: state.get('form').get('error'),
+    signedUp: state.get('form').get('signedUp')
+  } },
+  { signup: signup.request, fail: signup.failure, success: signup.success, push }
 )
 @applyStyles(styles)
 export default class Home extends Component {
   state: {
-    snackbar: {
-      open: boolean;
-      message: string;
-      duration: number;
-    };
+    nicknameError: string;
+    emailError: string;
+    phoneError: string;
+    passwordError: string;
+    password2Error: string;
+
     nicknameInput: string;
     emailInput: string;
     phoneInput: string;
@@ -40,11 +49,12 @@ export default class Home extends Component {
   constructor(props: Props) {
     super(props);
     this.state = {
-      snackbar: {
-        open: false,
-        message: '',
-        duration: 8000
-      },
+      nicknameError: '',
+      phoneError: '',
+      emailError: '',
+      passwordError: '',
+      password2Error: '',
+
       nicknameInput: '',
       phoneInput: '',
       emailInput: '',
@@ -54,15 +64,34 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    socket.on('signup.error', (error) => { this.props.fail(error) });
+    socket.on('signup.error', (error) => { this.props.fail(error.message) });
     socket.on('signup.success', () => { this.props.success() });
   }
 
-  handleNicknameChange(event: Event) { this.setState({nicknameInput: Events.target(event, HTMLInputElement).value}); }
-  handleEmailChange(event: Event) { this.setState({emailInput: Events.target(event, HTMLInputElement).value}); }
-  handlePhoneChange(event: Event) { this.setState({phoneInput: Events.target(event, HTMLInputElement).value}); }
-  handlePasswordChange(event: Event) { this.setState({passwordInput: Events.target(event, HTMLInputElement).value}); }
-  handlePassword2Change(event: Event) { this.setState({password2Input: Events.target(event, HTMLInputElement).value}); }
+  componentWillReceiveProps(nextProps: Props) {
+    console.log(nextProps);
+    const { signedUp } = this.props;
+    if (!signedUp && nextProps.signedUp) {
+      console.log('signedUp');
+      this.props.push('/signedup');
+    }
+  }
+
+  handleNicknameChange(event: Event) { 
+    this.setState({nicknameInput: Events.target(event, HTMLInputElement).value, nicknameError: ''}); 
+  }
+  handleEmailChange(event: Event) { 
+    this.setState({emailInput: Events.target(event, HTMLInputElement).value, emailError: ''}); 
+  }
+  handlePhoneChange(event: Event) { 
+    this.setState({phoneInput: Events.target(event, HTMLInputElement).value, phoneError: ''}); 
+  }
+  handlePasswordChange(event: Event) { 
+    this.setState({passwordInput: Events.target(event, HTMLInputElement).value, passwordError: ''}); 
+  }
+  handlePassword2Change(event: Event) { 
+    this.setState({password2Input: Events.target(event, HTMLInputElement).value, password2Error: ''}); 
+  }
   handleSubmit() {
     const { 
       nicknameInput, 
@@ -71,53 +100,53 @@ export default class Home extends Component {
       passwordInput,
       password2Input
     } = this.state;
+
+    const errors = {
+      nicknameError: validators.required(nicknameInput),
+      phoneError: validators.required(phoneInput),
+      emailError: validators.required(emailInput),
+      passwordError: validators.required(passwordInput) || validators.password(passwordInput, password2Input),
+      password2Error: validators.required(password2Input) || validators.password(passwordInput, password2Input),
+    };
+
+    for (let error of Object.values(errors)) {
+      if (error) { return this.setState(errors) }
+    }
+    
     this.props.signup();
     socket.emit('signup', {email: emailInput, phone: phoneInput, nickname: nicknameInput, password: passwordInput});
   }
   
-  componentWillMount() {
-  }
-  
-  handleSnackbarRequestClose() {
-    this.setState({
-      snackbar: {
-        ...this.state.snackbar,
-        open: false
-      }
-    });
-  }
-
-  openSnackbar(message: string) {
-    this.setState({
-      snackbar: {
-        ...this.state.snackbar,
-        message,
-        open: true,
-      }
-    });
-  }
 
   render() {
     const {
-      snackbar,
+      phoneError,
+      nicknameError,
+      emailError,
+      passwordError,
+      password2Error,
+
       phoneInput,
       nicknameInput,
       emailInput,
       passwordInput,
       password2Input
     } = this.state;
+    const { apiError } = this.props;
     return (
       <div styleName="signup">
         <Helmet title="Sign up form"/>
           <Paper>
             <div styleName="form">
             <h1>Sign up</h1>
+            { apiError && <span>SOCKET ERROR: {apiError}</span> }
             <div styleName="signup-row">
               <TextField
                 hintText="nickname"
                 floatingLabelText="Type in your nickname"
                 onChange={this.handleNicknameChange.bind(this)}
                 value={nicknameInput}
+                errorText={nicknameError}
               />
             </div>
             <div styleName="signup-row">
@@ -125,12 +154,14 @@ export default class Home extends Component {
                 hintText="email"
                 floatingLabelText="Type in your email"
                 value={emailInput}
+                errorText={emailError}
                 onChange={this.handleEmailChange.bind(this)}
               />
               <TextField
                 hintText="phone"
                 floatingLabelText="Type in your phone number"
                 value={phoneInput}
+                errorText={phoneError}
                 onChange={this.handlePhoneChange.bind(this)}
               />
             </div>
@@ -140,12 +171,14 @@ export default class Home extends Component {
                 type="password"
                 floatingLabelText="Type in your password"
                 value={passwordInput}
+                errorText={passwordError}
                 onChange={this.handlePasswordChange.bind(this)}
               />
               <TextField
                 hintText="Password repeat"
                 type="password"
                 floatingLabelText="Type in your password again"
+                errorText={password2Error}
                 value={password2Input}
                 onChange={this.handlePassword2Change.bind(this)}
               />
@@ -155,13 +188,6 @@ export default class Home extends Component {
             </div>
           </div>
         </Paper>
-        <Snackbar
-          styleName="snackbar"
-          open={snackbar.open}
-          message={snackbar.message}
-          autoHideDuration={snackbar.duration}
-          onRequestClose={() => {this.handleSnackbarRequestClose()}}
-        />
       </div>
     );
   }

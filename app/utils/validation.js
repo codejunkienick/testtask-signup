@@ -36,6 +36,10 @@ export function integer(value) {
   }
 }
 
+export function password(password, password2) {
+  if (password !== password2) return 'Passwords do not match';
+}
+
 export function oneOf(enumeration) {
   return value => {
     if (!~enumeration.indexOf(value)) {
