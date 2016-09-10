@@ -1,24 +1,19 @@
 import Immutable from 'immutable';
-import { TODOS, ADD, REMOVE }  from '../actions/form';
+import { SIGNUP }  from '../actions/form';
 
 const initialState = Immutable.fromJS({
-  loaded: false,
-  todos: Immutable.List() 
+  signedUp: false,
 }) 
 
-export default function todo(state = initialState, action = {}) {
-  const { itemId, response, error } = action;
+export default function form(state = initialState, action = {}) {
+  const { response, error } = action;
   switch (action.type) {
-    case TODOS.REQUEST: 
+    case SIGNUP.REQUEST: 
       return state.set('loading', true);
-    case TODOS.SUCCESS:
-      return state.delete('loading').set('loaded', true).set('items', Immutable.List(response));
-    case TODOS.FAILURE:
-      return state.delete('loading').set('loaded', false).set('error', error);
-    case ADD.SUCCESS: 
-      return state.set('items', state.get('items').push(action.todo));
-    case REMOVE.SUCCESS: 
-      return state.set('items', Immutable.List(response));
+    case SIGNUP.SUCCESS:
+      return state.delete('loading').set('signedUp', true);
+    case SIGNUP.FAILURE:
+      return state.delete('loading').set('signedUp', false).set('error', error);
     default:
       return state;
   }

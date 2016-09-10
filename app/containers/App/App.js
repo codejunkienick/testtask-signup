@@ -31,8 +31,6 @@ class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired,
-    addItem: PropTypes.func.isRequired,
-    loadItems: PropTypes.func.isRequired,
   };
 
   constructor(props) {

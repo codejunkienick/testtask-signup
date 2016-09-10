@@ -1,28 +1,58 @@
+// @flow 
 import React, { Component } from 'react';
 import applyStyles from 'react-css-modules';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { FlatButton, Snackbar } from 'material-ui';
+import { RaisedButton, Snackbar, Paper, TextField } from 'material-ui';
+import  * as Events from 'utils/events';
 import styles from './Home.css';
+
+type Props = {
+  
+}
+
 
 @connect(
 )
 @applyStyles(styles)
 export default class Home extends Component {
-  constructor(props) {
+  state: {
+    snackbar: {
+      open: boolean;
+      message: string;
+      duration: number;
+    };
+    nicknameInput: string;
+    emailInput: string;
+    phoneInput: string;
+    passwordInput: string;
+    password2Input: string;
+  };
+  props: Props;
+  constructor(props: Props) {
     super(props);
     this.state = {
       snackbar: {
         open: false,
-        message: '$item added in cart',
+        message: '',
         duration: 8000
       },
-      openCart: false
+      nicknameInput: '',
+      phoneInput: '',
+      emailInput: '',
+      passwordInput: '',
+      password2Input: '',
     };
   }
+
+  handleNicknameChange(event: Event) { this.setState({nicknameInput: Events.target(event, HTMLInputElement).value}); }
+  handleEmailChange(event: Event) { this.setState({emailInput: Events.target(event, HTMLInputElement).value}); }
+  handlePhoneChange(event: Event) { this.setState({emailInput: Events.target(event, HTMLInputElement).value}); }
+  handlePasswordChange(event: Event) { this.setState({passwordInput: Events.target(event, HTMLInputElement).value}); }
+  handlePassword2Change(event: Event) { this.setState({password2Input: Events.target(event, HTMLInputElement).value}); }
+  
   componentWillMount() {
-    this.props.loadItems(); 
   }
   
   handleSnackbarRequestClose() {
@@ -34,35 +64,78 @@ export default class Home extends Component {
     });
   }
 
-  openSnackbar(itemName) {
+  openSnackbar(message: string) {
     this.setState({
       snackbar: {
         ...this.state.snackbar,
+        message,
         open: true,
-        message: 'Set ' + itemName + ' was added in cart',
-        action: 'Order'
       }
     });
   }
 
-  onAddItem(itemId, name) {
-    this.props.addItem(itemId);
-    this.openSnackbar(name);
-  }
-
   render() {
-    const { snackbar } = this.state;
+    const {
+      snackbar,
+      nicknameInput,
+      emailInput,
+      passwordInput,
+      password2Input
+    } = this.state;
     return (
-      <div styleName="home">
-        <Helmet title="Sign up"/>
-        <h1>Sign up</h1>
+      <div styleName="signup">
+        <Helmet title="Sign up form"/>
+          <Paper>
+            <div styleName="form">
+            <h1>Sign up</h1>
+            <div styleName="signup-row">
+              <TextField
+                hintText="nickname"
+                floatingLabelText="Type in your nickname"
+                onChange={this.handleNicknameChange.bind(this)}
+                value={nicknameInput}
+              />
+            </div>
+            <div styleName="signup-row">
+              <TextField
+                hintText="email"
+                floatingLabelText="Type in your email"
+                value={emailInput}
+                onChange={this.handleEmailChange.bind(this)}
+              />
+              <TextField
+                hintText="phone"
+                floatingLabelText="Type in your phone number"
+                value={emailInput}
+                onChange={this.handlePhoneChange.bind(this)}
+              />
+            </div>
+            <div styleName="signup-row">
+              <TextField
+                hintText="Password"
+                type="password"
+                floatingLabelText="Type in your password"
+                value={passwordInput}
+                onChange={this.handlePasswordChange.bind(this)}
+              />
+              <TextField
+                hintText="Password repeat"
+                type="password"
+                floatingLabelText="Type in your password again"
+                value={password2Input}
+                onChange={this.handlePassword2Change.bind(this)}
+              />
+            </div>
+            <div styleName="btn-wrapper">
+              <RaisedButton styleName="btn" label="Signup" primary={true} /> 
+            </div>
+          </div>
+        </Paper>
         <Snackbar
           styleName="snackbar"
           open={snackbar.open}
           message={snackbar.message}
-          action={snackbar.action}
           autoHideDuration={snackbar.duration}
-          onActionTouchTap={() => console.log('unsupported')}
           onRequestClose={() => {this.handleSnackbarRequestClose()}}
         />
       </div>

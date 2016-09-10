@@ -1,18 +1,8 @@
 import { createRequestTypes, createType, action } from './creators';
 
-const prefix = 'todo';
+const prefix = 'form';
 
-export const TODOS = createRequestTypes(prefix, 'TODOS');
-export const ADD = createRequestTypes(prefix, 'ADD');
-export const REMOVE = createRequestTypes(prefix, 'REMOVE');
+export const SIGNUP = createRequestTypes(prefix, 'SIGNUP');
 
-export const todos = {
-  request: () => action(TODOS.REQUEST),
-  success: () => action(TODOS.SUCCESS, {response}),
-  failure: () => action(TODOS.FAILURE, {error}),
-};
-
-export const load = () => action(TODOS.REQUEST);
-export const add = (text) => action(ADD.REQUEST, {todo: text});
-export const remove = (id) => action(REMOVE.REQUEST, {id});
+export const submit = (nickname, email, password) => action(SIGNUP.REQUEST, {nickname, email, password});
 

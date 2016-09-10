@@ -14,6 +14,7 @@ import config from './config';
 const app = express();
 const server = new http.Server(app);
 const io = new SocketIo(server);
+io.path('/ws');
 
 app.use(cookieParser(config.secret));
 app.use(session({
@@ -49,7 +50,6 @@ if (config.apiPort) {
   });
 
   io.listen(runnable);
-
   io.on('connection', (socket) => {
     handleUserSocket(socket);
   });
