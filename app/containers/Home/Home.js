@@ -18,7 +18,7 @@ type Props = {
   fail: () => void;
   success: () => void;
   push: (route: string) => void;
-  apiError: string;
+  apiError: Object;
   signedUp: boolean;
 }
 
@@ -64,7 +64,7 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    socket.on('signup.error', (error) => { this.props.fail(error.message) });
+    socket.on('signup.error', (error) => { this.props.fail(error) });
     socket.on('signup.success', () => { this.props.success() });
   }
 
@@ -74,6 +74,14 @@ export default class Home extends Component {
     if (!signedUp && nextProps.signedUp) {
       console.log('signedUp');
       this.props.push('/signedup');
+    }
+
+    console.log(nextProps);
+    if (nextProps.apiError) {
+      this.setState({
+        emailError: (nextProps.apiError.emailError) ? nextProps.apiError.emailError : this.state.emailError,
+        phoneError: (nextProps.apiError.phoneError) ? nextProps.apiError.phoneError : this.state.phoneError, 
+      });
     }
   }
 
@@ -87,10 +95,10 @@ export default class Home extends Component {
     this.setState({phoneInput: Events.target(event, HTMLInputElement).value, phoneError: ''}); 
   }
   handlePasswordChange(event: Event) { 
-    this.setState({passwordInput: Events.target(event, HTMLInputElement).value, passwordError: ''}); 
+    this.setState({passwordInput: Events.target(event, HTMLInputElement).value, passwordError: '', password2Error: ''}); 
   }
   handlePassword2Change(event: Event) { 
-    this.setState({password2Input: Events.target(event, HTMLInputElement).value, password2Error: ''}); 
+    this.setState({password2Input: Events.target(event, HTMLInputElement).value, password2Error: '', passwordError: ''}); 
   }
   handleSubmit() {
     const { 
@@ -98,15 +106,21 @@ export default class Home extends Component {
       phoneInput,
       emailInput,
       passwordInput,
-      password2Input
+      password2Input,
+
+      nicknameError, 
+      phoneError,
+      emailError,
+      passwordError,
+      password2Error
     } = this.state;
 
     const errors = {
-      nicknameError: validators.required(nicknameInput),
-      phoneError: validators.required(phoneInput),
-      emailError: validators.required(emailInput),
-      passwordError: validators.required(passwordInput) || validators.password(passwordInput, password2Input),
-      password2Error: validators.required(password2Input) || validators.password(passwordInput, password2Input),
+      nicknameError: nicknameError || validators.required(nicknameInput),
+      phoneError: phoneError || validators.required(phoneInput),
+      emailError: emailError || validators.required(emailInput),
+      passwordError: passwordError || validators.required(passwordInput) || validators.password(passwordInput, password2Input),
+      password2Error: password2Error || validators.required(password2Input) || validators.password(passwordInput, password2Input),
     };
 
     for (let error of Object.values(errors)) {
@@ -139,7 +153,6 @@ export default class Home extends Component {
           <Paper>
             <div styleName="form">
             <h1>Sign up</h1>
-            { apiError && <span>SOCKET ERROR: {apiError}</span> }
             <div styleName="signup-row">
               <TextField
                 hintText="nickname"

@@ -6,8 +6,8 @@ export default function handleUserSocket(socket) {
     socket.on('signup', (data) => {
       const { nickname, phone, password, email } = data;
       if (!nickname || !phone || !password || !email) return socket.emit('signup.error', { message: 'required fields are empty' });
-      if (!validator.isEmail(email)) return socket.emit('signup.error', { message: 'email is not valid' });
-      if (!validator.isMobilePhone(phone, 'ru-RU')) return socket.emit('signup.error', { message: 'phone is not valid' });
+      if (!validator.isEmail(email)) return socket.emit('signup.error', { emailError: 'email is not valid' });
+      if (!validator.isMobilePhone(phone, 'ru-RU')) return socket.emit('signup.error', { phoneError: 'phone is not valid' });
 
       return socket.emit('signup.success'); 
     });
